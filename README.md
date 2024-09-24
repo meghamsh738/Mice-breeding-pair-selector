@@ -1,3 +1,4 @@
+Download the installation file from here: https://drive.google.com/file/d/14JcqLGHsASBI6K_-xVbnJxQ-_cp__JVC/view?usp=sharing
 
 # Breeder Pair Selector
 
