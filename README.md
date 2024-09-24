@@ -72,11 +72,11 @@ Breeder Pair Selector is a Python-based GUI application designed to assist in se
 - **Action:** Input your desired genotype in the provided field.
 - **Supported Formats:**
   - **Delimited Format:** `gene:allele`  
-    *Example:* `cx:+/+ e22:f/+ ifnar:f/f`
+    *Example:* `cx:+/+ td:+/+ ifnar:f/f`
   - **Space-Separated Format:** `gene allele`  
-    *Example:* `cx +/+ e22 f/+ ifnar f/f`
+    *Example:* `cx +/+ td +/+ ifnar f/f`
   - **Mixed Delimiters:** Combination of both  
-    *Example:* `cx:+/+ f/+ e22:f/+`
+    *Example:* `cx:+/+ td +/+ ifnar:f/f`
 - **Description:** The application supports various input formats for flexibility. Real-time validation will indicate if the format is correct.
 
 #### 4. Find Breeder Pairs
