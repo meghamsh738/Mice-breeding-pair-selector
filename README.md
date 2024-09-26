@@ -152,8 +152,9 @@ This project is licensed under the [MIT License](LICENSE).
 For any inquiries or support, please contact:
 
 **Meghamsh Teja Konda**  
-Email: [meghamsh.teja.konda@example.com](mailto:meghamsh.teja.konda@example.com)  
-LinkedIn: [linkedin.com/in/meghamsh-teja-konda](https://www.linkedin.com/in/meghamsh-teja-konda)
+Email: [meghamshteja555@gmail.com)
+Twitter(X): https://x.com/MeghamshTeja
+
 
 ---
 
