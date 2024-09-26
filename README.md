@@ -1,136 +1,160 @@
-Download the installation file from here: https://drive.google.com/file/d/14JcqLGHsASBI6K_-xVbnJxQ-_cp__JVC/view?usp=sharing
-
 # Breeder Pair Selector
 
-**Breeder Pair Selector © Software by Meghamsh Teja Konda**
+**Breeder Pair Selector** is a comprehensive desktop application designed to assist researchers and breeders in selecting optimal breeder pairs based on genetic genotypes. Utilizing an intuitive graphical user interface (GUI), the application facilitates the management of gene databases, loading and processing breeder data from Excel files, and exporting actionable breeder pair suggestions.
 
 ## Table of Contents
 
-- [Overview](#overview)
 - [Features](#features)
 - [Installation](#installation)
-  - [Prerequisites](#prerequisites)
-  - [Usage Instructions](#usage-instructions)
-    1. [Load Excel File](#1-load-excel-file)
-    2. [Manage Genes and Classes (Optional)](#2-manage-genes-and-classes-optional)
-    3. [Enter Desired Genotype](#3-enter-desired-genotype)
-    4. [Find Breeder Pairs](#4-find-breeder-pairs)
-    5. [Export Results (Optional)](#5-export-results-optional)
-    6. [Mark Breeder Pairs in Excel (Optional)](#6-mark-breeder-pairs-in-excel-optional)
-    7. [View Logs](#7-view-logs)
-    8. [Settings](#8-settings)
-    9. [View and Manage Existing Genes and Classes](#9-view-and-manage-existing-genes-and-classes)
-- [Clone the Repository](#clone-the-repository)
+  - [Installation Files](#installation-files)
+- [Usage](#usage)
+  - [1. Load Excel File](#1-load-excel-file)
+  - [2. Manage Genes and Classes](#2-manage-genes-and-classes)
+  - [3. Enter Desired Genotype](#3-enter-desired-genotype)
+  - [4. Find Breeder Pairs](#4-find-breeder-pairs)
+  - [5. Export Results](#5-export-results)
+  - [6. Mark Breeder Pairs in Excel](#6-mark-breeder-pairs-in-excel)
+  - [7. View Logs](#7-view-logs)
+  - [8. View Mice Details](#8-view-mice-details)
+- [Screenshots](#screenshots)
+- [Requirements](#requirements)
+- [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
 
-## Overview
-
-Breeder Pair Selector is a Python-based GUI application designed to assist in selecting optimal breeder pairs based on desired genotypes. Utilizing **PyQt5** for the user interface and **Pandas** for data processing, this tool streamlines the breeder selection process, ensuring accurate and efficient pairing.
-
 ## Features
 
-- **Gene and Class Management:** Easily add, view, and delete gene-class pairs.
-- **Excel File Loading:** Import breeder data from Excel files with multiple sheets.
-- **Genotype Input:** Support for various genotype input formats with real-time validation.
-- **Breeder Pair Analysis:** Identify direct and indirect breeder pairs with probability and similarity scores.
-- **Data Export:** Export results to CSV, Excel, or PDF formats.
-- **Excel Marking:** Highlight suggested breeder pairs directly in your Excel files.
-- **User Settings:** Customize application preferences, including language selection.
-- **Comprehensive Logging:** Monitor application actions and debug effectively.
+- **Gene Database Management:** Add, view, and delete gene-class pairs to customize your genetic analysis.
+- **Excel File Loading:** Import breeder data from Excel files with support for multiple sheets and automated data cleaning.
+- **Genotype Parsing:** Input desired genotypes in flexible formats with real-time validation.
+- **Breeder Pair Analysis:** Generate direct and indirect breeder pair suggestions based on genetic compatibility and similarity scores.
+- **Export Functionality:** Save results in CSV, Excel, or PDF formats for further analysis or reporting.
+- **Excel Integration:** Highlight recommended breeder pairs directly in your Excel files with unique pair tags.
+- **Mice Details Viewer:** Filter and export mice details based on age criteria.
+- **Comprehensive Logging:** Monitor application activities and debug processes through an integrated log viewer.
+- **User-Friendly Interface:** Intuitive GUI built with PyQt5 for seamless user experience.
 
 ## Installation
 
-### Prerequisites
+### Installation Files
 
-- **Python:** Version 3.6 or higher
-- **pip:** Python package installer
+Download the appropriate installer for your operating system:
 
-### Usage Instructions
+- **Windows:** [Download Installer](https://drive.google.com/file/d/1eExExXXUFelkjGuwfKPPkG5oy_41kBgZ/view?usp=drive_link)
+- **Mac:** Not available yet
 
-#### 1. Load Excel File
+**Note:** This application is currently available for Windows only. Mac support will be provided in future releases.
 
-- **Action:** Click the `Load Excel File` button.
-- **Description:** Select and load your breeder data from an Excel file. The application will process the data, excluding any breeders marked in colored rows if applicable.
+## Usage
 
-#### 2. Manage Genes and Classes (Optional)
+### 1. Load Excel File
 
-**Add Gene-Class Pairs:**
+- **Step 1:** Click the **"Load Excel File"** button.
+- **Step 2:** Select your breeder data Excel file (`.xlsx` format).
+- **Step 3:** The application will process the file, excluding any breeders based on row coloring and filtering by age.
 
-- **Action:** Enter the gene name and its corresponding class in the provided fields.
-- **Button:** Click `Add Gene-Class Pair`.
-- **Description:** Adds the entered gene and class to the gene database for future reference.
+### 2. Manage Genes and Classes
 
-**Delete Gene-Class Pairs:**
+- **Adding a Gene-Class Pair:**
+  - Enter the gene name in the **"Gene Name"** field.
+  - Select the gene class (e.g., Cre, Reporter, Flox) from the dropdown.
+  - Click **"Add Gene-Class Pair"** to save.
 
-- **Action:** Click the `View Genes and Classes` button.
-- **Description:** View a list of all existing gene names and their corresponding classes.
-- **Delete:** Select the desired pairs and click `Delete Selected` to remove them from the database.
+- **Viewing and Deleting Gene-Class Pairs:**
+  - Click the **"View Genes and Classes"** button.
+  - In the dialog, select one or more gene-class pairs.
+  - Click **"Delete Selected"** to remove them from the database.
 
-#### 3. Enter Desired Genotype
+### 3. Enter Desired Genotype
 
-- **Action:** Input your desired genotype in the provided field.
-- **Supported Formats:**
-  - **Delimited Format:** `gene:allele`  
-    *Example:* `cx:+/+ td:+/+ ifnar:f/f`
-  - **Space-Separated Format:** `gene allele`  
-    *Example:* `cx +/+ td +/+ ifnar f/f`
-  - **Mixed Delimiters:** Combination of both  
-    *Example:* `cx:+/+ td +/+ ifnar:f/f`
-- **Description:** The application supports various input formats for flexibility. Real-time validation will indicate if the format is correct.
+- **Input Formats Supported:**
+  - **Delimited Format:** `gene:allele` (e.g., `cat:+/+ dog:f/+`)
+  - **Space-Separated Format:** `gene allele` (e.g., `cat +/+ dog f/+`)
+  - **Mixed Delimiters:** Combination of both (e.g., `cat:+/+ dog:f/+`)
 
-#### 4. Find Breeder Pairs
+- **Real-Time Validation:** The input field provides immediate feedback on the validity of the entered genotype.
 
-- **Action:** Click the `Find Breeder Pairs` button.
-- **Description:** Analyze the loaded breeder data based on the desired genotype and generate suggestions for optimal breeder pairs. Results will be displayed in the direct and indirect breeder pairs tables.
+### 4. Find Breeder Pairs
 
-#### 5. Export Results (Optional)
+- After loading the Excel file and entering the desired genotype, click the **"Find Breeder Pairs"** button.
+- The application will analyze the data and display suggested direct and indirect breeder pairs based on genetic compatibility.
 
-- **Action:** Use the export buttons located below the breeder pairs tables.
-- **Options:**
-  - **CSV:** Export the direct or indirect breeder pair suggestions to a CSV file.
-  - **Excel:** Export the results to an Excel file.
-  - **PDF:** Export the suggestions as a PDF document.
-- **Description:** Save the breeder pair suggestions in your preferred format for further analysis or record-keeping.
+### 5. Export Results
 
-#### 6. Mark Breeder Pairs in Excel (Optional)
+- **Direct Breeder Pairs:** Click **"Export Direct Pairs"** and choose your preferred format (CSV, Excel, PDF).
+- **Indirect Breeder Pairs:** Click **"Export Indirect Pairs"** and select the desired export format.
 
-- **Action:** Click the `Mark Breeder Pairs in Excel` button.
-- **Description:** Highlight the suggested breeder pairs directly in your Excel file by coloring the rows in yellow and assigning unique pair tags. This helps in easily identifying and managing the recommended pairs within your dataset.
+### 6. Mark Breeder Pairs in Excel
 
-#### 7. View Logs
+- Click the **"Mark Breeder Pairs in Excel"** button to highlight suggested pairs in your loaded Excel file.
+- The application will color the relevant rows and assign unique pair tags for easy identification.
 
-- **Location:** `Application Logs` section at the bottom of the application window.
-- **Description:** Monitor real-time logs of application actions, errors, and other relevant information. Useful for tracking operations and debugging purposes.
+### 7. View Logs
 
-#### 8. Settings
+- Monitor application activities in the **"Application Logs"** section located at the bottom of the interface.
+- Logs include informational messages, warnings, and error details to help with debugging and tracking actions.
 
-- **Action:** Click the `Settings` button.
-- **Description:** Access the settings dialog to customize application preferences such as language selection and other user-specific configurations.
+### 8. View Mice Details
 
-#### 9. View and Manage Existing Genes and Classes
+- Click the **"Show Mice Details"** button to open a dialog where you can filter mice based on age range.
+- Export the filtered mice details as needed.
 
-- **Action:** Click the `View Genes and Classes` button.
-- **Description:** Display a list of all existing gene names and their corresponding classes in a table format.
+## Screenshots
 
-**Delete Gene-Class Pairs:**
+![image](https://github.com/user-attachments/assets/030e091e-4c27-42be-a818-404d2f60fe27)
 
-- **Action:** Select the desired rows in the table.
-- **Button:** Click `Delete Selected` to remove the selected gene-class pairs from the database.
 
-## Clone the Repository
+![image](https://github.com/user-attachments/assets/b5944dbe-0dc8-43cf-a2c9-a3d7b7fb7e7b)
 
-To clone the repository to your local machine, use the following commands:
 
-```bash
-git clone https://github.com/yourusername/BreederPairSelector.git
-cd BreederPairSelector
-```
+![image](https://github.com/user-attachments/assets/f447186f-7dac-4473-a953-46de64bacb12)
+
+
+## Requirements
+
+- **Operating System:** Windows 10 or higher
+- **Hardware:** Minimum 2GB RAM, 100MB free disk space
+- **Dependencies:** All necessary dependencies are bundled within the installer. No additional installation is required.
+
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. **Fork the Repository**
+2. **Create a Feature Branch**
+
+   ```bash
+   git checkout -b feature/YourFeature
+   ```
+
+3. **Commit Your Changes**
+
+   ```bash
+   git commit -m "Add Your Feature"
+   ```
+
+4. **Push to the Branch**
+
+   ```bash
+   git push origin feature/YourFeature
+   ```
+
+5. **Open a Pull Request**
+
+Please ensure your code follows the project's coding standards and includes relevant documentation and tests.
 
 ## License
 
-[MIT License](LICENSE)
+This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
 
-For any questions or feedback, please contact **Meghamsh Teja Konda** at [meghamshteja555@gmail.com](mailto:meghamshteja555@gmail.com)
+For any inquiries or support, please contact:
+
+**Meghamsh Teja Konda**  
+Email: [meghamsh.teja.konda@example.com](mailto:meghamsh.teja.konda@example.com)  
+LinkedIn: [linkedin.com/in/meghamsh-teja-konda](https://www.linkedin.com/in/meghamsh-teja-konda)
+
+---
+
+*Happy Breeding!*
