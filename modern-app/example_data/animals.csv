@@ -1,0 +1,9 @@
+breeder_name,gender,strain,sheet,cre,reporter,flox1,flox2,age
+B101,male,C57BL/6J,Sheet1,+/-,+/-,+/+,f/+,12
+B102,female,C57BL/6J,Sheet1,+/-,+/-,+/+,f/+,11
+B201,male,C57BL/6J,Sheet1,+/+,f/+,+/+,+/+,10
+B202,female,C57BL/6J,Sheet1,+/+,f/+,+/+,+/+,9
+B301,male,129/SvEv,Sheet2,f/+,+/-,+/f,+/+,8
+B302,female,129/SvEv,Sheet2,f/+,+/-,+/f,+/+,8
+B401,male,CD1,Sheet2,+/+,+/+,f/+,f/+,7
+B402,female,CD1,Sheet2,+/+,+/+,f/+,f/+,7
