@@ -101,6 +101,10 @@ Download the appropriate installer for your operating system:
 
 ## Screenshots
 
+Modern UI using the built-in example breeder dataset:
+
+![Breeder Pair Selector app screenshot](modern-app/screenshots/example_run.png)
+
 ![image](https://github.com/user-attachments/assets/030e091e-4c27-42be-a818-404d2f60fe27)
 
 
