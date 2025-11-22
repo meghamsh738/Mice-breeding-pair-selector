@@ -1,10 +1,15 @@
 # Breeder Pair Selector
 
-**Breeder Pair Selector** is a comprehensive desktop application designed to assist researchers and breeders in selecting optimal breeder pairs based on genetic genotypes. Utilizing an intuitive graphical user interface (GUI), the application facilitates the management of gene databases, loading and processing breeder data from Excel files, and exporting actionable breeder pair suggestions.
+**Breeder Pair Selector** now ships in two forms:
+- **Modern web app (preferred):** React + FastAPI under `modern-app/`, with Playwright E2E that drives the bundled example data and regenerates a screenshot.
+- **Legacy desktop app (archived):** Original PyQt GUI (`python main.py`) kept for reference.
+
+Both share the same pairing logic: manage genes, parse desired genotypes, find direct/indirect breeder pairs, and export results.
 
 ## Table of Contents
 
 - [Features](#features)
+- [Modern Web App (Preferred)](#modern-web-app-preferred)
 - [Installation](#installation)
   - [Installation Files](#installation-files)
 - [Usage](#usage)
@@ -33,6 +38,18 @@
 - **Mice Details Viewer:** Filter and export mice details based on age criteria.
 - **Comprehensive Logging:** Monitor application activities and debug processes through an integrated log viewer.
 - **User-Friendly Interface:** Intuitive GUI built with PyQt5 for seamless user experience.
+
+## Modern Web App (Preferred)
+- See `modern-app/README.md` for setup, dev commands, and API details.
+- Quick start:
+  ```bash
+  cd modern-app
+  npm install
+  pip install -r backend/requirements.txt
+  npm run dev:back   # API on :8002
+  npm run dev:front  # Vite on :5174
+  ```
+- Verification & screenshot refresh: `npm run test:e2e` (starts both servers, drives the example flow, and regenerates `modern-app/screenshots/example_run.png`).
 
 ## Installation
 
@@ -101,16 +118,14 @@ Download the appropriate installer for your operating system:
 
 ## Screenshots
 
-Modern UI using the built-in example breeder dataset:
+Modern web app (example dataset driven by Playwright E2E):
 
 ![Breeder Pair Selector app screenshot](modern-app/screenshots/example_run.png)
 
+Legacy PyQt desktop UI (archived):
+
 ![image](https://github.com/user-attachments/assets/030e091e-4c27-42be-a818-404d2f60fe27)
-
-
 ![image](https://github.com/user-attachments/assets/b5944dbe-0dc8-43cf-a2c9-a3d7b7fb7e7b)
-
-
 ![image](https://github.com/user-attachments/assets/f447186f-7dac-4473-a953-46de64bacb12)
 
 
