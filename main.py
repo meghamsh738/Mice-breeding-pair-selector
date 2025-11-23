@@ -832,6 +832,7 @@ class BreederPairSelector(QWidget):
         self.init_instructions_button()
         self.init_view_genes_button()
         self.init_show_mice_button()
+        self.init_preview_table()
         self.trademark_label = QLabel("© Software by Meghamsh Teja Konda")
         self.trademark_label.setAlignment(Qt.AlignCenter)
         self.trademark_label.setFont(QFont("Arial", 10, QFont.Bold))
@@ -970,6 +971,12 @@ class BreederPairSelector(QWidget):
         self.reminder_text.setReadOnly(True)
         self.layout.addWidget(self.reminder_text)
 
+        self.summary_text = QTextEdit()
+        self.summary_text.setReadOnly(True)
+        self.summary_text.setMinimumHeight(120)
+        self.layout.addWidget(QLabel("Descriptive results:"))
+        self.layout.addWidget(self.summary_text)
+
     def init_tables(self):
         direct_label = QLabel("Suggested Direct Breeder Pairs:")
         self.layout.addWidget(direct_label)
@@ -1039,6 +1046,21 @@ class BreederPairSelector(QWidget):
         self.progress_bar.setVisible(False)
         self.layout.addWidget(self.progress_bar)
 
+    def init_preview_table(self):
+        self.preview_group = QGroupBox("Preview of loaded data (scrollable)")
+        layout = QVBoxLayout()
+        self.preview_caption = QLabel("No data loaded.")
+        layout.addWidget(self.preview_caption)
+        self.preview_table = QTableWidget()
+        self.preview_table.setColumnCount(0)
+        self.preview_table.setRowCount(0)
+        self.preview_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+        self.preview_table.verticalHeader().setVisible(False)
+        self.preview_table.setMinimumHeight(200)
+        layout.addWidget(self.preview_table)
+        self.preview_group.setLayout(layout)
+        self.layout.addWidget(self.preview_group)
+
     def init_view_genes_button(self):
         self.view_genes_button = QPushButton("View Genes and Classes")
         self.view_genes_button.clicked.connect(self.view_genes_and_classes)
@@ -1101,6 +1123,18 @@ class BreederPairSelector(QWidget):
                     older_breeders['breeder_name'].tolist())
                 QMessageBox.information(self, "Reminder", reminder)
                 logging.info(f"Mice older than {self.max_age} months: {older_breeders['breeder_name'].tolist()}")
+
+            # Populate preview table (scrollable)
+            max_rows = min(len(self.breeders), 500)
+            self.preview_table.setColumnCount(len(self.breeders.columns))
+            self.preview_table.setHorizontalHeaderLabels([str(c) for c in self.breeders.columns])
+            self.preview_table.setRowCount(max_rows)
+            for r in range(max_rows):
+                row = self.breeders.iloc[r]
+                for c, col in enumerate(self.breeders.columns):
+                    self.preview_table.setItem(r, c, QTableWidgetItem(str(row[col])))
+            suffix = f" (showing first {max_rows} of {len(self.breeders)} rows)" if len(self.breeders) > max_rows else ""
+            self.preview_caption.setText(f"Loaded breeders: {len(self.breeders)} rows{suffix}")
         QMessageBox.information(self, "Success", "File loaded successfully.")
         logging.info("File loaded successfully.")
 
@@ -1161,6 +1195,16 @@ class BreederPairSelector(QWidget):
                 if not direct_pairs:
                     QMessageBox.information(self, "No Indirect Pairs",
                                             "No indirect breeder pairs found to improve the chances.")
+
+            # Descriptive summary
+            lines = []
+            lines.append(f"Animals loaded: {len(self.breeders)}")
+            lines.append(f"Desired genes: {', '.join(sorted(desired_genotype.keys()))}")
+            lines.append(f"Direct pairs: {len(direct_pairs)}")
+            lines.append(f"Indirect pairs: {len(indirect_pairs)}")
+            if len(direct_pairs) == 0 and len(indirect_pairs) == 0:
+                lines.append("No compatible pairs found. Consider adding breeders or adjusting genotype.")
+            self.summary_text.setPlainText("\n".join(lines))
         except Exception as e:
             logging.exception("An error occurred during breeder pair analysis.")
             QMessageBox.critical(self, "Error", f"An error occurred during breeder pair analysis:\n{e}")

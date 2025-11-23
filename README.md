@@ -1,10 +1,6 @@
 # Breeder Pair Selector
 
-**Breeder Pair Selector** now ships in two forms:
-- **Modern web app (preferred):** React + FastAPI under `modern-app/`, with Playwright E2E that drives the bundled example data and regenerates a screenshot.
-- **Legacy desktop app (archived):** Original PyQt GUI (`python main.py`) kept for reference.
-
-Both share the same pairing logic: manage genes, parse desired genotypes, find direct/indirect breeder pairs, and export results.
+**Breeder Pair Selector** (modern web app). Legacy desktop is now documented in `LEGACY.md`.
 
 ## Table of Contents
 
