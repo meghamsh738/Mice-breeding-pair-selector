@@ -209,6 +209,21 @@ function App() {
               Loaded breeders: {breeders.length} | Genes detected: {Object.values(genes).flat().length}
             </div>
 
+            <div className="p-4 rounded-xl bg-blue-50 border border-blue-100 text-blue-900 space-y-2">
+              <div className="flex items-center justify-between gap-3 flex-wrap">
+                <div>
+                  <p className="text-xs font-semibold">Need to reformat your sheet?</p>
+                  <p className="text-xs">Paste this prompt into ChatGPT, Gemini, or Grok, then upload the CSV it returns.</p>
+                </div>
+                <div className="flex gap-2 text-xs font-semibold underline">
+                  <a href="https://chat.openai.com/" target="_blank" rel="noreferrer" className="text-blue-800">ChatGPT</a>
+                  <a href="https://gemini.google.com/app" target="_blank" rel="noreferrer" className="text-blue-800">Gemini</a>
+                  <a href="https://grok.com/" target="_blank" rel="noreferrer" className="text-blue-800">Grok</a>
+                </div>
+              </div>
+              <pre className="text-[11px] leading-5 bg-white border border-blue-100 rounded-lg p-3 whitespace-pre-wrap">Convert to CSV with headers: breeder_name, gender, strain, sheet, cre, reporter, flox1, flox2, age. Normalize gender to male/female, set sheet to Sheet1 if missing, keep gene markers as typed, age in weeks numeric. Output CSV only.</pre>
+            </div>
+
             <div className="space-y-2">
               <p className="text-sm font-semibold text-gray-700">Desired Genotype</p>
               <div className="flex gap-2">
