@@ -29,6 +29,12 @@ npm run dev:front
 ```
 Open http://localhost:5174, check **Use Example Data** (or upload CSV/XLSX), set a desired genotype (e.g., `cre +/- reporter +/+`), and click **Find Breeder Pairs**.
 
+## Data format & quick AI helper
+- Required columns (CSV/XLSX): `breeder_name, gender, strain, sheet, cre, reporter, flox1, flox2, age` (see `example_data/animals.csv`).
+- If your colony sheet differs, reshape it first with an AI: [ChatGPT](https://chat.openai.com/), [Gemini](https://gemini.google.com/app), [Grok](https://grok.com/).
+- Prompt: "Convert my table to CSV with headers: breeder_name, gender, strain, sheet, cre, reporter, flox1, flox2, age. Keep values, no invented data, output UTF-8 CSV text only."
+- Save as `animals.csv`, then upload or paste. Visual helper: `screenshots/data-format-helper.svg`.
+
 ## Tests & screenshot
 ```bash
 npx playwright install --with-deps chromium
