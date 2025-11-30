@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500">
+  <rect width="100%" height="100%" fill="#0b1221"/>
+  <text x="40" y="70" fill="#d8e3ff" font-family="Segoe UI, Arial" font-size="28" font-weight="bold">Data Formatting Helper</text>
+  <text x="40" y="130" fill="#d8e3ff" font-family="Segoe UI, Arial" font-size="22">1) Paste your raw data into ChatGPT / Gemini / Grok.</text>
+  <text x="40" y="170" fill="#d8e3ff" font-family="Segoe UI, Arial" font-size="22">2) Tell it the required columns & show one sample row.</text>
+  <text x="40" y="210" fill="#d8e3ff" font-family="Segoe UI, Arial" font-size="22">3) Ask to convert to CSV/TSV exactly matching the schema.</text>
+  <text x="40" y="250" fill="#d8e3ff" font-family="Segoe UI, Arial" font-size="22">4) Download the file and load it in the app.</text>
+  <text x="40" y="320" fill="#8ab6ff" font-family="Segoe UI, Arial" font-size="20">Tip: “Keep headers exactly as specified; use UTF-8; commas for CSV, tabs for TSV.”</text>
+</svg>
