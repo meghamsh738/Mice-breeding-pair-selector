@@ -156,41 +156,42 @@ function App() {
     loadGenes().catch(() => {})
   }
 
+  const hasResults = directPairs.length > 0 || indirectPairs.length > 0
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
-        <header className="text-center mb-10">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3">
-            Mice Breeding Pair Selector
-          </h1>
-          <p className="text-gray-600 text-lg">Upload colony sheets, manage genes, and compute direct/indirect breeder pairs.</p>
+    <div className="ui-container">
+      <div className="ui-stack">
+        <header className="ui-header">
+          <h1 className="ui-title">Mice Breeding Pair Selector</h1>
+          <p className="ui-subtitle">Upload colony sheets, manage genes, and compute direct/indirect breeder pairs.</p>
         </header>
 
         {error && (
-          <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
-            <strong>Error:</strong> {error}
-            <button onClick={() => setError(null)} className="ml-4 text-red-900 underline">Dismiss</button>
+          <div className="ui-alert error">
+            <div>
+              <strong>Error:</strong> {error}
+            </div>
+            <button onClick={() => setError(null)} className="ui-btn ghost compact">Dismiss</button>
           </div>
         )}
 
-        <div className="grid lg:grid-cols-2 gap-6 items-start">
-          <div className="bg-white rounded-2xl shadow-xl p-6 space-y-4">
-            <div className="flex items-center justify-between">
+        <section className="ui-panel">
+          <div className="ui-stack sm">
+            <div className="ui-row">
               <div>
-                <p className="text-sm font-semibold text-gray-700">Data Source</p>
-                <p className="text-xs text-gray-500">Excel/CSV upload or example data</p>
+                <div className="ui-label">Data Source</div>
+                <div className="ui-hint">Excel/CSV upload or example data.</div>
               </div>
-              <div className="flex gap-3">
-                <label className="inline-flex items-center gap-2 text-sm font-semibold text-gray-700">
+              <div className="flex flex-wrap items-center gap-2">
+                <label className="flex items-center gap-2 text-sm">
                   <input
                     type="checkbox"
-                    className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                     checked={useExample}
                     onChange={(e) => setUseExample(e.target.checked)}
                   />
-                  Use Example Data
+                  <span>Use Example Data</span>
                 </label>
-                <label className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1 rounded cursor-pointer">
+                <label className="ui-btn ghost compact">
                   Upload File
                   <input
                     type="file"
@@ -205,86 +206,82 @@ function App() {
               </div>
             </div>
 
-            <div className="bg-indigo-50 border border-indigo-100 rounded-lg p-3 text-xs text-indigo-900">
-              Loaded breeders: {breeders.length} | Genes detected: {Object.values(genes).flat().length}
+            <div className="ui-alert">
+              <div>
+                <strong>Loaded breeders:</strong> {breeders.length} · <strong>Genes detected:</strong> {Object.values(genes).flat().length}
+              </div>
             </div>
 
-            <div className="p-4 rounded-xl bg-blue-50 border border-blue-100 text-blue-900 space-y-2">
-              <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div className="ui-panel compact">
+              <div className="ui-row">
                 <div>
-                  <p className="text-xs font-semibold">Need to reformat your sheet?</p>
-                  <p className="text-xs">Paste this prompt into ChatGPT, Gemini, or Grok, then upload the CSV it returns.</p>
+                  <div className="ui-label">Need to reformat your sheet?</div>
+                  <div className="ui-hint">Paste this prompt into ChatGPT, Gemini, or Grok; upload the returned CSV.</div>
                 </div>
-                <div className="flex gap-2 text-xs font-semibold underline">
-                  <a href="https://chat.openai.com/" target="_blank" rel="noreferrer" className="text-blue-800">ChatGPT</a>
-                  <a href="https://gemini.google.com/app" target="_blank" rel="noreferrer" className="text-blue-800">Gemini</a>
-                  <a href="https://grok.com/" target="_blank" rel="noreferrer" className="text-blue-800">Grok</a>
+                <div className="flex flex-wrap items-center gap-2">
+                  <a href="https://chat.openai.com/" target="_blank" rel="noreferrer" className="ui-btn ghost compact">ChatGPT</a>
+                  <a href="https://gemini.google.com/app" target="_blank" rel="noreferrer" className="ui-btn ghost compact">Gemini</a>
+                  <a href="https://grok.com/" target="_blank" rel="noreferrer" className="ui-btn ghost compact">Grok</a>
                 </div>
               </div>
-              <pre className="text-[11px] leading-5 bg-white border border-blue-100 rounded-lg p-3 whitespace-pre-wrap">Convert to CSV with headers: breeder_name, gender, strain, sheet, cre, reporter, flox1, flox2, age. Normalize gender to male/female, set sheet to Sheet1 if missing, keep gene markers as typed, age in weeks numeric. Output CSV only.</pre>
+              <pre className="ui-codeblock">Convert to CSV with headers: breeder_name, gender, strain, sheet, cre, reporter, flox1, flox2, age. Normalize gender to male/female, set sheet to Sheet1 if missing, keep gene markers as typed, age in weeks numeric. Output CSV only.</pre>
             </div>
 
-            <div className="space-y-2">
-              <p className="text-sm font-semibold text-gray-700">Desired Genotype</p>
+            <div className="ui-field">
+              <div className="ui-label">Desired Genotype</div>
               <div className="flex gap-2">
                 <input
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="ui-input flex-1"
                   value={desiredGenotypeText}
                   onChange={(e) => setDesiredGenotypeText(e.target.value)}
                   placeholder="cre +/- reporter +/+ flox1 f/+"
                 />
-                <button
-                  className="text-xs bg-gray-100 px-3 py-2 rounded-lg"
-                  onClick={() => setDesiredGenotypeText('cre +/- reporter +/+')}
-                >
-                  Example Genotype
+                <button className="ui-btn secondary" onClick={() => setDesiredGenotypeText('cre +/- reporter +/+')}>
+                  Example
                 </button>
               </div>
-              <label className="text-xs text-gray-600 flex items-center gap-2">
-                Min probability (%)
+              <label className="flex items-center gap-2 text-sm">
+                <span className="ui-hint">Min probability (%)</span>
                 <input
                   type="number"
                   min="0"
                   max="100"
-                  className="w-20 px-2 py-1 border border-gray-300 rounded"
+                  className="ui-input compact w-24"
                   value={minProb}
                   onChange={(e) => setMinProb(parseFloat(e.target.value) || 0)}
                 />
               </label>
             </div>
 
-            <div className="space-y-3">
+            <div className="grid gap-2">
               <button
                 onClick={handleFindPairs}
                 disabled={loading}
                 data-testid="process-btn"
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                className="ui-btn primary w-full"
               >
-                {loading ? 'Processing...' : 'Find Breeder Pairs'}
+                {loading ? 'Processing…' : 'Find Breeder Pairs'}
               </button>
-              {(directPairs.length > 0 || indirectPairs.length > 0) && (
-                <button
-                  onClick={handleExport}
-                  className="w-full bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700 transition-all duration-200 shadow-lg hover:shadow-xl"
-                >
+              {hasResults && (
+                <button onClick={handleExport} className="ui-btn secondary w-full">
                   Export to Excel
                 </button>
               )}
             </div>
 
-            <div>
-              <p className="text-sm font-semibold text-gray-700 mb-2">Gene Library</p>
-              <div className="flex flex-wrap gap-2 text-xs">
+            <div className="ui-field">
+              <div className="ui-label">Gene Library</div>
+              <div className="flex flex-wrap gap-2">
                 {Object.entries(genes).map(([cls, list]) => (
-                  <span key={cls} className="bg-gray-100 px-3 py-1 rounded">{cls}: {list.join(', ')}</span>
+                  <span key={cls} className="ui-pill">{cls}: {list.join(', ')}</span>
                 ))}
-                {!Object.keys(genes).length && <span className="text-gray-500 text-xs">No genes loaded</span>}
+                {!Object.keys(genes).length && <span className="ui-hint">No genes loaded</span>}
               </div>
-              <div className="mt-2 flex gap-2">
-                <input id="gene-name" className="flex-1 px-2 py-1 border border-gray-300 rounded" placeholder="gene name" />
-                <input id="gene-class" className="w-28 px-2 py-1 border border-gray-300 rounded" placeholder="Class e.g. Cre" />
+              <div className="mt-2 flex flex-wrap gap-2">
+                <input id="gene-name" className="ui-input compact flex-1" placeholder="gene name" />
+                <input id="gene-class" className="ui-input compact w-32" placeholder="Class e.g. Cre" />
                 <button
-                  className="text-xs bg-gray-200 px-3 rounded"
+                  className="ui-btn secondary compact"
                   onClick={() => {
                     const g = (document.getElementById('gene-name') as HTMLInputElement).value
                     const c = (document.getElementById('gene-class') as HTMLInputElement).value
@@ -296,100 +293,100 @@ function App() {
               </div>
             </div>
           </div>
+        </section>
 
-          <div className="bg-white rounded-2xl shadow-xl p-6 space-y-4">
-            <h2 className="text-2xl font-bold text-gray-800">Results</h2>
+        <section className="ui-panel">
+          <h2 className="ui-h2">Results</h2>
 
-            {directPairs.length > 0 && (
-              <div className="border border-green-100 rounded-lg p-4">
-                <h3 className="font-semibold text-green-800 mb-2">Direct Pairs (probability above min)</h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="bg-green-50">
-                        <th className="px-2 py-1 text-left">Male</th>
-                        <th className="px-2 py-1 text-left">Female</th>
-                        <th className="px-2 py-1 text-left">Prob %</th>
-                        <th className="px-2 py-1 text-left">Strain match</th>
+          {directPairs.length > 0 && (
+            <div className="ui-panel compact">
+              <h3 className="ui-h2">Direct Pairs (probability above min)</h3>
+              <div className="overflow-x-auto">
+                <table className="ui-table">
+                  <thead>
+                    <tr>
+                      <th>Male</th>
+                      <th>Female</th>
+                      <th>Prob %</th>
+                      <th>Strain match</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {directPairs.map((p, idx) => (
+                      <tr key={idx}>
+                        <td>{p.Male}</td>
+                        <td>{p.Female}</td>
+                        <td>{p.Probability?.toFixed(2)}</td>
+                        <td>{p.Same_Strain ? 'Yes' : 'No'}</td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {directPairs.map((p, idx) => (
-                        <tr key={idx} className="border-t border-green-100">
-                          <td className="px-2 py-1">{p.Male}</td>
-                          <td className="px-2 py-1">{p.Female}</td>
-                          <td className="px-2 py-1">{p.Probability?.toFixed(2)}</td>
-                          <td className="px-2 py-1">{p.Same_Strain ? 'Yes' : 'No'}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                    ))}
+                  </tbody>
+                </table>
               </div>
-            )}
+            </div>
+          )}
 
-            {indirectPairs.length > 0 && (
-              <div className="border border-amber-100 rounded-lg p-4">
-                <h3 className="font-semibold text-amber-800 mb-2">Indirect Pairs (similarity)</h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="bg-amber-50">
-                        <th className="px-2 py-1 text-left">Male</th>
-                        <th className="px-2 py-1 text-left">Female</th>
-                        <th className="px-2 py-1 text-left">Similarity</th>
-                        <th className="px-2 py-1 text-left">Strain match</th>
+          {indirectPairs.length > 0 && (
+            <div className="ui-panel compact">
+              <h3 className="ui-h2">Indirect Pairs (similarity)</h3>
+              <div className="overflow-x-auto">
+                <table className="ui-table">
+                  <thead>
+                    <tr>
+                      <th>Male</th>
+                      <th>Female</th>
+                      <th>Similarity</th>
+                      <th>Strain match</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {indirectPairs.map((p, idx) => (
+                      <tr key={idx}>
+                        <td>{p.Male}</td>
+                        <td>{p.Female}</td>
+                        <td>{p.Similarity?.toFixed(2)}</td>
+                        <td>{p.Same_Strain ? 'Yes' : 'No'}</td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {indirectPairs.map((p, idx) => (
-                        <tr key={idx} className="border-t border-amber-100">
-                          <td className="px-2 py-1">{p.Male}</td>
-                          <td className="px-2 py-1">{p.Female}</td>
-                          <td className="px-2 py-1">{p.Similarity?.toFixed(2)}</td>
-                          <td className="px-2 py-1">{p.Same_Strain ? 'Yes' : 'No'}</td>
-                        </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {directPairs.length === 0 && indirectPairs.length === 0 && (
+            <div className="ui-panel compact text-center">
+              <p className="ui-hint">Results will appear here after processing.</p>
+            </div>
+          )}
+
+          {breeders.length > 0 && (
+            <div className="ui-panel compact">
+              <h3 className="ui-h2">Breeder Preview</h3>
+              <div className="overflow-x-auto">
+                <table className="ui-table">
+                  <thead>
+                    <tr>
+                      {Object.keys(breeders[0]).slice(0, 6).map(key => (
+                        <th key={key}>{key}</th>
                       ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
-
-            {directPairs.length === 0 && indirectPairs.length === 0 && (
-              <div className="text-center text-gray-400 py-10">
-                Results will appear here after processing
-              </div>
-            )}
-
-            {breeders.length > 0 && (
-              <div>
-                <h3 className="font-semibold text-gray-800 mb-2">Breeder Preview</h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-xs">
-                    <thead>
-                      <tr className="bg-gray-50">
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {breeders.slice(0, 5).map((row, idx) => (
+                      <tr key={idx}>
                         {Object.keys(breeders[0]).slice(0, 6).map(key => (
-                          <th key={key} className="px-2 py-1 text-left capitalize">{key}</th>
+                          <td key={key}>{String(row[key] ?? '')}</td>
                         ))}
                       </tr>
-                    </thead>
-                    <tbody>
-                      {breeders.slice(0, 5).map((row, idx) => (
-                        <tr key={idx} className="border-t border-gray-100">
-                          {Object.keys(breeders[0]).slice(0, 6).map(key => (
-                            <td key={key} className="px-2 py-1">{String(row[key] ?? '')}</td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  {breeders.length > 5 && <p className="text-xs text-gray-500 mt-1">Showing first 5 of {breeders.length}</p>}
-                </div>
+                    ))}
+                  </tbody>
+                </table>
+                {breeders.length > 5 && <p className="ui-hint">Showing first 5 of {breeders.length}</p>}
               </div>
-            )}
-          </div>
-        </div>
+            </div>
+          )}
+        </section>
       </div>
     </div>
   )
