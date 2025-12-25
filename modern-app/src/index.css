@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -29,8 +31,13 @@
 
     --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.06);
 
-    --font-sans: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    --font-display: "Chakra Petch", "Space Grotesk", system-ui, sans-serif;
+    --font-body: "Space Grotesk", system-ui, sans-serif;
+    --font-sans: var(--font-body);
+    --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+    --tracking-display: 0.06em;
+    --tracking-label: 0.12em;
 
     --content-max: 720px;
     --t-fast: 140ms ease-out;
@@ -121,6 +128,19 @@
     color: var(--text);
     font-size: 16px;
     line-height: 1.6;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-display);
   }
 
   input[type="checkbox"],
@@ -188,16 +208,20 @@
     margin: 0;
     font-size: 24px;
     line-height: 1.25;
-    letter-spacing: -0.01em;
-    font-weight: 500;
+    letter-spacing: var(--tracking-display);
+    font-weight: 700;
+    font-family: var(--font-display);
+    text-transform: uppercase;
   }
 
   .ui-h2 {
     margin: 0;
     font-size: 20px;
     line-height: 1.35;
-    letter-spacing: -0.01em;
-    font-weight: 500;
+    letter-spacing: var(--tracking-display);
+    font-weight: 700;
+    font-family: var(--font-display);
+    text-transform: uppercase;
   }
 
   .ui-subtitle {
@@ -234,8 +258,11 @@
 
   .ui-label {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--text);
+    font-family: var(--font-mono);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
   }
 
   .ui-hint {
@@ -302,7 +329,10 @@
     background: var(--surface);
     color: var(--text);
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
+    font-family: var(--font-mono);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
     cursor: pointer;
     user-select: none;
     transition: background-color var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast), transform var(--t-fast), filter var(--t-fast);
@@ -369,6 +399,9 @@
     color: var(--text-2);
     font-size: 12px;
     line-height: 1;
+    font-family: var(--font-mono);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
   }
 
   .ui-alert {
