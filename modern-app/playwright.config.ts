@@ -4,12 +4,19 @@ export default defineConfig({
   testDir: './tests',
   timeout: 80_000,
   fullyParallel: true,
+  expect: {
+    toHaveScreenshot: { animations: 'disabled', caret: 'hide' }
+  },
   use: {
     baseURL: 'http://localhost:5174',
-    trace: 'on-first-retry'
+    trace: 'on-first-retry',
+    viewport: { width: 1440, height: 900 },
+    colorScheme: 'light',
+    reducedMotion: 'reduce',
+    video: 'retain-on-failure'
   },
   webServer: {
-    command: 'npm run dev:full',
+    command: "bash -lc 'set -e; trap \"kill 0\" EXIT; npm run dev:back & npm run dev:front'",
     url: 'http://localhost:5174',
     reuseExistingServer: true,
     timeout: 120_000,
@@ -18,7 +25,12 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chromium'] }
+      use: {
+        ...devices['Desktop Chromium'],
+        viewport: { width: 1440, height: 900 },
+        colorScheme: 'light',
+        reducedMotion: 'reduce'
+      }
     }
   ]
 })
