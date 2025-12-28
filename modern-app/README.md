@@ -1,13 +1,13 @@
 # Mice Breeding Pair Selector (React + FastAPI)
 
-Modernized UI for the PyQt breeder tool. Upload Excel/CSV colony sheets (multi-sheet supported by the backend), manage gene classes, enter desired genotype text, compute direct/indirect breeder pairs, and export results. A distinct example dataset is bundled.
+Modernized UI for the PyQt breeder tool with lab notebook neo-brutalist styling. Upload Excel/CSV colony sheets (multi-sheet supported by the backend), manage gene classes, enter desired genotype text, compute direct/indirect breeder pairs, and export results. A distinct example dataset is bundled.
 
 ## Project structure
 - `src/` – React UI (Vite + TypeScript + Tailwind).
 - `backend/` – FastAPI service (legacy gene logic + modern endpoints).
 - `example_data/animals.csv` – Bundled breeder dataset for example mode.
 - `tests/` – Playwright E2E covering the example flow.
-- `screenshots/example_run.png` – Produced by E2E.
+- `screenshots/example_run.png` – Produced by E2E (Dec 28, 2025).
 - Preview: open `screenshots/example_run.png` after running the E2E.
 
 ## Prerequisites

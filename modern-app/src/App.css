@@ -62,6 +62,14 @@
   gap: 8px;
 }
 
+.lab-head > div {
+  min-width: 0;
+}
+
+.lab-head h2 {
+  overflow-wrap: anywhere;
+}
+
 .eyebrow {
   text-transform: uppercase;
   letter-spacing: var(--tracking-label);
@@ -113,6 +121,11 @@
   letter-spacing: var(--tracking-label);
   text-transform: uppercase;
   font-weight: 600;
+  max-width: 100%;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .status-chip.success {
@@ -374,6 +387,7 @@
   font-family: var(--font-display);
   text-transform: uppercase;
   letter-spacing: var(--tracking-display);
+  overflow-wrap: anywhere;
 }
 
 .today-head {
@@ -381,6 +395,10 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: var(--space-3);
+}
+
+.today-head > div {
+  min-width: 0;
 }
 
 .today-head .muted {
@@ -413,6 +431,7 @@
   text-align: left;
   cursor: pointer;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  min-width: 0;
 }
 
 .action-card:hover:not(:disabled) {
@@ -441,6 +460,11 @@
   text-transform: uppercase;
   font-weight: 600;
   cursor: pointer;
+  max-width: 100%;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .accent {
@@ -458,6 +482,11 @@
   font-family: var(--font-mono);
   letter-spacing: var(--tracking-label);
   text-transform: uppercase;
+  max-width: 100%;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .section-title {
@@ -472,6 +501,11 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+}
+
+.chip-row > * {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .pill {
@@ -620,6 +654,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  min-width: 0;
 }
 
 .entry-list {
@@ -639,6 +674,7 @@
   color: var(--text);
   text-align: left;
   cursor: pointer;
+  min-width: 0;
 }
 
 .entry-item.active {
@@ -725,6 +761,8 @@
   background: var(--warning-soft);
   color: var(--warning);
   gap: 8px;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .breadcrumbs {
@@ -763,6 +801,7 @@
   text-transform: uppercase;
   letter-spacing: var(--tracking-display);
   font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 .details-head {
@@ -936,6 +975,7 @@
   justify-content: space-between;
   align-items: center;
   background: var(--surface-2);
+  min-width: 0;
 }
 
 .quote {
@@ -960,6 +1000,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  min-width: 0;
 }
 
 .att-left {
@@ -1095,6 +1136,7 @@
   grid-template-columns: auto 1fr auto auto;
   gap: 8px;
   align-items: center;
+  min-width: 0;
 }
 
 .attachment-icon {
@@ -1231,6 +1273,17 @@
   background: var(--surface-2);
   color: var(--text);
   cursor: pointer;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.entry-item p,
+.experiment-card p,
+.file-card p,
+.action-card p,
+.attachment-row p,
+.attachment-block p {
+  overflow-wrap: anywhere;
 }
 
 .template-card.active {
