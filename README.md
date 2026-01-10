@@ -50,4 +50,4 @@ The previous PyQt application is no longer shipped. For historical notes, see `L
 MIT License. See `LICENSE`.
 
 ## Contact
-Meghamsh Teja Konda — meghamshteja555@gmail.com | https://x.com/MeghamshTeja
+Project maintainer — lab-support@example.org
