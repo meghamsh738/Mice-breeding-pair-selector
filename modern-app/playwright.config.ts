@@ -5,6 +5,8 @@ export default defineConfig({
   timeout: 80_000,
   fullyParallel: true,
   expect: {
+    // Self-hosted fonts may take a moment to be marked as "ready" in headless Chromium.
+    timeout: 15_000,
     toHaveScreenshot: { animations: 'disabled', caret: 'hide' }
   },
   use: {
