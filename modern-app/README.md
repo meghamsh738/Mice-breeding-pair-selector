@@ -2,6 +2,10 @@
 
 Modernized UI for the PyQt breeder tool with lab notebook neo-brutalist styling. Upload Excel/CSV colony sheets (multi-sheet supported by the backend), manage gene classes, enter desired genotype text, compute direct/indirect breeder pairs, and export results. A distinct example dataset is bundled.
 
+Part of **Easylab Suite**: this repo is bundled as the **Breeding Pair Selector** module (`breeding`).
+
+License: All Rights Reserved. See `../LICENSE`.
+
 ## Project structure
 - `src/` – React UI (Vite + TypeScript + Tailwind).
 - `backend/` – FastAPI service (legacy gene logic + modern endpoints).
@@ -51,3 +55,7 @@ Generates `screenshots/example_run.png` after driving the example flow.
 - `GET /health` – liveness
 
 All endpoints accept `use_example: true` to operate entirely on `example_data/animals.csv` without user data.
+
+### Suite note (writable gene database)
+In the suite build, the backend persists `gene_database.json` under a writable `Documents/Easylab/...` folder via
+the `EASYLAB_DATA_PATH` environment variable injected by the launcher.

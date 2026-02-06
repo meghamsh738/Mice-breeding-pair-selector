@@ -24,17 +24,37 @@ app = FastAPI(title="Mice Breeding Pair Selector API")
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:5174"],
-    allow_credentials=True,
+    # The suite loads front-ends from file:// inside Electron. Allow all origins so
+    # local module windows can talk to the bundled FastAPI backend.
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # ==================== GENE DATABASE ====================
 
+def resolve_gene_database_path(filename: str = "gene_database.json") -> Path:
+    """
+    Choose a writable location for persisted state.
+
+    In the packaged Easylab Suite, module code lives under the app's resources path
+    which is typically read-only. The launcher injects `EASYLAB_DATA_PATH` so the
+    backend can store state (gene catalog) under Documents/Easylab/... instead.
+    """
+    env_path = os.environ.get("EASYLAB_DATA_PATH") or os.environ.get("EASYLAB_DATA_DIR")
+    if env_path:
+        base = Path(env_path)
+        base.mkdir(parents=True, exist_ok=True)
+        return base / filename
+
+    # Dev / standalone fallback: store next to the modern-app root (writable).
+    return Path(__file__).resolve().parent.parent / filename
+
+
 class GeneDatabase:
-    def __init__(self, filename='gene_database.json'):
-        self.filename = filename
+    def __init__(self, filename: str = "gene_database.json"):
+        self.path = resolve_gene_database_path(filename)
         self.transgene_db = {}
         self.transgene_to_category = {}
         self.wildtype_genotype = {}
@@ -42,9 +62,9 @@ class GeneDatabase:
         self.create_reverse_mapping()
 
     def load_database(self):
-        if os.path.exists(self.filename):
+        if self.path.exists():
             try:
-                with open(self.filename, 'r') as f:
+                with open(self.path, 'r') as f:
                     self.transgene_db = json.load(f)
             except Exception as e:
                 print(f"Error loading gene database: {e}")
@@ -54,7 +74,8 @@ class GeneDatabase:
 
     def save_database(self):
         try:
-            with open(self.filename, 'w') as f:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            with open(self.path, 'w') as f:
                 json.dump(self.transgene_db, f, indent=4)
         except Exception as e:
             print(f"Error saving gene database: {e}")

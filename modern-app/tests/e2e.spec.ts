@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 
 test('example data pairing/distribution flow', async ({ page }) => {
   await page.goto('/')
-  await page.addStyleTag({ content: '* { transition: none !important; animation: none !important; }' })
+  await page.addStyleTag({ content: '* { transition: none !important; animation: none !important; } .signature { display: none !important; }' })
 
   await page.getByLabel('Use Example Data').check()
   await page.getByTestId('process-btn').click()

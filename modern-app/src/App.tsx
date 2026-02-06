@@ -13,6 +13,16 @@ import './App.css'
 
 type Breeder = Record<string, string | number | null>
 
+const resolveApiBase = () => {
+  if (typeof window === 'undefined') return undefined
+  const params = new URLSearchParams(window.location.search)
+  const queryBase = params.get('apiBase') ?? undefined
+  const injected = (window as Window & { __EASYLAB_API__?: string }).__EASYLAB_API__
+  return injected ?? queryBase
+}
+
+const API_BASE = resolveApiBase() ?? import.meta.env.VITE_API_BASE ?? 'http://127.0.0.1:8002'
+
 interface PairResult {
   Male: string
   Female: string
@@ -75,7 +85,7 @@ function App() {
   }, [useExample])
 
   const loadGenes = async () => {
-    const res = await fetch('http://localhost:8002/genes')
+    const res = await fetch(`${API_BASE}/genes`)
     if (res.ok) {
       setGenes(await res.json())
     }
@@ -91,7 +101,7 @@ function App() {
     try {
       const formData = new FormData()
       formData.append('file', file)
-      const response = await fetch('http://localhost:8002/upload', { method: 'POST', body: formData })
+      const response = await fetch(`${API_BASE}/upload`, { method: 'POST', body: formData })
       if (!response.ok) throw new Error('Upload failed')
       const data = await response.json()
       setBreeders(data.breeders || [])
@@ -112,7 +122,7 @@ function App() {
     setLoading(true)
     setError(null)
     try {
-      const response = await fetch('http://localhost:8002/find-pairs', {
+      const response = await fetch(`${API_BASE}/find-pairs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -135,7 +145,7 @@ function App() {
 
   const handleExport = async () => {
     try {
-      const response = await fetch('http://localhost:8002/export-breeders', {
+      const response = await fetch(`${API_BASE}/export-breeders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -164,7 +174,7 @@ function App() {
     const form = new FormData()
     form.append('gene', gene)
     form.append('gene_class', geneClassValue)
-    await fetch('http://localhost:8002/genes/add', { method: 'POST', body: form })
+    await fetch(`${API_BASE}/genes/add`, { method: 'POST', body: form })
     loadGenes().catch(() => {})
   }
 
@@ -496,6 +506,14 @@ function App() {
           </div>
         </section>
       </div>
+
+      <footer className="signature" data-testid="signature">
+        <span className="sig-primary">Made by Meghamsh Teja Konda</span>
+        <span className="sig-dot" aria-hidden="true" />
+        <a className="sig-link" href="mailto:meghamshteja555@gmail.com">
+          meghamshteja555@gmail.com
+        </a>
+      </footer>
     </div>
   )
 }

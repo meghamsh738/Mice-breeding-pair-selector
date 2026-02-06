@@ -1419,3 +1419,39 @@ textarea:focus-visible {
 .table-wrap tbody tr:hover {
   background: rgba(47, 106, 246, 0.08);
 }
+
+.signature {
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4) 0 var(--space-2);
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+.sig-primary {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.sig-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--muted);
+}
+
+.sig-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(15, 23, 42, 0.32);
+  padding-bottom: 2px;
+}
+
+.sig-link:hover {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+}

@@ -1,0 +1,32 @@
+{
+  "id": "breeding",
+  "name": "Breeding Pair Selector",
+  "repoName": "Mice-breeding-pair-selector",
+  "type": "fastapi",
+  "defaultPort": 8022,
+  "frontend": {
+    "kind": "vite-react",
+    "root": "modern-app",
+    "buildOutput": ".app-dist/web"
+  },
+  "backend": {
+    "kind": "fastapi",
+    "root": "modern-app/backend",
+    "entry": "backend.main:app",
+    "state": {
+      "geneDatabaseFile": "gene_database.json",
+      "envDataPath": "EASYLAB_DATA_PATH"
+    }
+  },
+  "exampleData": {
+    "root": "modern-app/example_data"
+  },
+  "storage": {
+    "label": "Breeding"
+  },
+  "signature": {
+    "madeBy": "Meghamsh Teja Konda",
+    "contactEmail": "meghamshteja555@gmail.com"
+  }
+}
+

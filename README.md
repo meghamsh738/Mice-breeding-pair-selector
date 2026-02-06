@@ -2,6 +2,8 @@
 
 Modern React + FastAPI web app for pairing mouse breeders from colony spreadsheets. Styling matches the lab notebook neo-brutalist system. Use the bundled example dataset for a zero-upload demo or bring your own CSV/XLSX. The old PyQt desktop UI is archived in `LEGACY.md`.
 
+Part of **Easylab Suite**: when bundled, it launches from the suite desktop launcher as the **Breeding Pair Selector** module.
+
 ## Project layout
 - `modern-app/src` – React (Vite + TypeScript + Tailwind)
 - `modern-app/backend` – FastAPI service with pairing logic and Excel export
@@ -47,7 +49,7 @@ This drives the example flow and regenerates `modern-app/screenshots/example_run
 The previous PyQt application is no longer shipped. For historical notes, see `LEGACY.md`.
 
 ## License
-MIT License. See `LICENSE`.
+Copyright (c) 2026 Meghamsh Teja Konda. All Rights Reserved. See `LICENSE`.
 
 ## Contact
-Project maintainer — lab-support@example.org
+Project maintainer — meghamshteja555@gmail.com
