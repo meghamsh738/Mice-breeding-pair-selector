@@ -186,29 +186,47 @@ function App() {
   const tutorialSteps: TutorialStep[] = useMemo(
     () => [
       {
+        selector: '[data-testid="breeding-use-example-toggle"]',
+        title: 'Use example data toggle',
+        description: 'Enable to load bundled breeders when testing workflow behavior.',
+      },
+      {
         selector: '[data-testid="breeders-upload-field"]',
-        title: 'Load breeders',
-        description: 'Upload breeders or toggle example data to initialize the pairing pool.',
+        title: 'Upload breeder sheet',
+        description: 'Upload CSV/XLSX breeder records to populate the candidate pool.',
       },
       {
         selector: '[data-testid="desired-genotype-input"]',
-        title: 'Set target genotype',
-        description: 'Enter the desired genotype string and minimum probability threshold.',
+        title: 'Desired genotype',
+        description: 'Enter target genotype using gene:allele or paired token format.',
+        details: [
+          'Example: cre +/- reporter +/+ flox1 f/+',
+        ],
+      },
+      {
+        selector: '[data-testid="min-probability-input"]',
+        title: 'Min probability (%)',
+        description: 'Filters direct-pair suggestions below this probability threshold.',
+      },
+      {
+        selector: '[data-testid="gene-library-section"]',
+        title: 'Gene library',
+        description: 'Review detected genes or add custom gene/class entries.',
       },
       {
         selector: '[data-testid="process-btn"]',
         title: 'Find breeder pairs',
-        description: 'Run pairing once inputs are set to generate direct and indirect candidates.',
+        description: 'Runs pairing against loaded breeders with current genotype constraints.',
       },
       {
         selector: '[data-testid="breeding-export-btn"]',
-        title: 'Export workbook',
-        description: 'Export pair recommendations to Excel for colony planning.',
+        title: 'Export Excel',
+        description: 'Download pair recommendations for colony planning records.',
       },
       {
         selector: '[data-testid="breeding-results-panel"]',
-        title: 'Review pair output',
-        description: 'Compare direct and indirect matches in the results panel.',
+        title: 'Review direct/indirect matches (final step)',
+        description: 'Validate confidence and strain match before final selection.',
       },
     ],
     []
@@ -277,6 +295,7 @@ function App() {
                   type="checkbox"
                   checked={useExample}
                   onChange={(e) => setUseExample(e.target.checked)}
+                  data-testid="breeding-use-example-toggle"
                 />
                 <span>Use Example Data</span>
               </label>
@@ -326,12 +345,13 @@ function App() {
                   max="100"
                   value={minProb}
                   onChange={(e) => setMinProb(parseFloat(e.target.value) || 0)}
+                  data-testid="min-probability-input"
                 />
               </label>
             </div>
           </div>
 
-          <div className="sidebar-section">
+          <div className="sidebar-section" data-testid="gene-library-section">
             <div className="section-title">Gene Library</div>
             <div className="chip-row">
               {Object.entries(genes).map(([cls, list]) => (

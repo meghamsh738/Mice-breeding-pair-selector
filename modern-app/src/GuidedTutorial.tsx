@@ -4,6 +4,7 @@ export type TutorialStep = {
   selector: string
   title: string
   description: string
+  details?: string[]
 }
 
 type GuidedTutorialProps = {
@@ -168,6 +169,20 @@ export function GuidedTutorial({
             </div>
             <div style={{ fontWeight: 700, fontSize: 17, marginBottom: 6 }}>{current.title}</div>
             <p style={{ margin: 0, lineHeight: 1.4 }}>{current.description}</p>
+            {current.details && current.details.length > 0 && (
+              <ul
+                style={{
+                  margin: '8px 0 0 16px',
+                  padding: 0,
+                  lineHeight: 1.35,
+                  fontSize: 13,
+                }}
+              >
+                {current.details.map((detail) => (
+                  <li key={detail}>{detail}</li>
+                ))}
+              </ul>
+            )}
             {!targetFound && (
               <p style={{ marginTop: 8, color: '#b45309', fontSize: 13 }}>
                 This area is currently hidden. Continue and return to it when visible.
