@@ -8,6 +8,7 @@ import {
   Search,
   Upload
 } from 'lucide-react'
+import { GuidedTutorial, type TutorialStep } from './GuidedTutorial'
 import exampleCsv from '../example_data/animals.csv?raw'
 import './App.css'
 
@@ -182,6 +183,36 @@ function App() {
   const statusLabel = loading ? 'Processing' : 'Ready'
   const statusClass = loading ? 'warning' : 'success'
   const geneCount = Object.values(genes).flat().length
+  const tutorialSteps: TutorialStep[] = useMemo(
+    () => [
+      {
+        selector: '[data-testid="breeders-upload-field"]',
+        title: 'Load breeders',
+        description: 'Upload breeders or toggle example data to initialize the pairing pool.',
+      },
+      {
+        selector: '[data-testid="desired-genotype-input"]',
+        title: 'Set target genotype',
+        description: 'Enter the desired genotype string and minimum probability threshold.',
+      },
+      {
+        selector: '[data-testid="process-btn"]',
+        title: 'Find breeder pairs',
+        description: 'Run pairing once inputs are set to generate direct and indirect candidates.',
+      },
+      {
+        selector: '[data-testid="breeding-export-btn"]',
+        title: 'Export workbook',
+        description: 'Export pair recommendations to Excel for colony planning.',
+      },
+      {
+        selector: '[data-testid="breeding-results-panel"]',
+        title: 'Review pair output',
+        description: 'Compare direct and indirect matches in the results panel.',
+      },
+    ],
+    []
+  )
 
   return (
     <div className="app-bg">
@@ -256,6 +287,7 @@ function App() {
                   type="file"
                   accept=".csv,.xlsx,.xls"
                   className="hidden"
+                  data-testid="breeders-upload-field"
                   onChange={(e) => {
                     const file = e.target.files?.[0]
                     if (file) handleUpload(file)
@@ -279,6 +311,7 @@ function App() {
                 onChange={(e) => setDesiredGenotypeText(e.target.value)}
                 placeholder="cre +/- reporter +/+ flox1 f/+"
                 aria-label="Desired genotype"
+                data-testid="desired-genotype-input"
               />
             </label>
             <div className="field-row">
@@ -343,6 +376,10 @@ function App() {
           <div className="sidebar-section">
             <div className="section-title">Actions</div>
             <div className="edit-actions">
+              <GuidedTutorial
+                steps={tutorialSteps}
+                startLabel="Tutorial"
+              />
               <button
                 onClick={handleFindPairs}
                 disabled={loading}
@@ -353,7 +390,7 @@ function App() {
                 {loading ? 'Processing…' : 'Find Breeder Pairs'}
               </button>
               {hasResults && (
-                <button onClick={handleExport} className="ghost" type="button">
+                <button onClick={handleExport} className="ghost" type="button" data-testid="breeding-export-btn">
                   <Download className="icon" aria-hidden="true" />
                   Export to Excel
                 </button>
@@ -379,7 +416,7 @@ function App() {
           </div>
         </aside>
 
-        <section className="panel editor">
+        <section className="panel editor" data-testid="breeding-results-panel">
           <div className="editor-header">
             <div className="title-row">
               <h1>Results</h1>
