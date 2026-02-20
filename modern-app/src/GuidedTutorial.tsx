@@ -79,6 +79,16 @@ export function GuidedTutorial({
     }
   }, [open, targetRect])
 
+  const triggerStyle = useMemo(
+    () => ({
+      position: 'fixed' as const,
+      top: 14,
+      right: 14,
+      zIndex: 2147482500,
+    }),
+    []
+  )
+
   const startTutorial = () => {
     if (!hasSteps) return
     onStart?.()
@@ -107,7 +117,13 @@ export function GuidedTutorial({
 
   return (
     <>
-      <button type="button" className={buttonClassName} onClick={startTutorial} data-testid="tutorial-start-btn">
+      <button
+        type="button"
+        className={buttonClassName}
+        onClick={startTutorial}
+        data-testid="tutorial-start-btn"
+        style={triggerStyle}
+      >
         {startLabel}
       </button>
 
