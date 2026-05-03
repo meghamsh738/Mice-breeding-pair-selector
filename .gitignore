@@ -3,6 +3,7 @@ node_modules/
 __pycache__/
 *.pyc
 dist/
+.app-dist/
 build/
 coverage/
 playwright-report/

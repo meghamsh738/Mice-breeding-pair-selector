@@ -1455,3 +1455,56 @@ textarea:focus-visible {
   color: var(--text);
   border-bottom-color: var(--accent);
 }
+
+/* Easylab suite visual refresh overrides. */
+.page,
+.app-bg {
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(rgba(99, 116, 139, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99, 116, 139, 0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.hero,
+.panel,
+.card,
+.today-card,
+.action-card,
+.meta-card,
+.hero-meta,
+.editor-panel,
+.link-panel,
+.experiment-card,
+.tab-panel,
+.plate-panel,
+.results-panel {
+  border-width: 1px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-soft);
+}
+
+.hero,
+.panel {
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.hero h1,
+.panel-title h1,
+.today-card h2,
+.card h2,
+.editor-panel h2 {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.pill,
+.badge,
+.tab-button,
+.primary,
+.secondary,
+.ghost,
+.action-card {
+  letter-spacing: 0;
+  border-width: 1px;
+}
