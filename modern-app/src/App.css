@@ -1457,54 +1457,64 @@ textarea:focus-visible {
 }
 
 /* Easylab suite visual refresh overrides. */
-.page,
-.app-bg {
+:where(.page, .app-bg, body) {
   background-color: var(--bg);
   background-image:
-    linear-gradient(rgba(99, 116, 139, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(99, 116, 139, 0.08) 1px, transparent 1px);
-  background-size: 28px 28px;
+    linear-gradient(rgba(15, 23, 42, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+  background-size: 44px 44px;
 }
 
-.hero,
-.panel,
-.card,
-.today-card,
-.action-card,
-.meta-card,
-.hero-meta,
-.editor-panel,
-.link-panel,
-.experiment-card,
-.tab-panel,
-.plate-panel,
-.results-panel {
-  border-width: 1px;
+:where(.hero, .panel, .card, .today-card, .action-card, .meta-card, .hero-meta, .editor-panel, .link-panel, .experiment-card, .tab-panel, .plate-panel, .results-panel, .upload-card, .settings-card, .summary-card) {
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 14px 34px rgba(15, 23, 42, 0.06);
 }
 
-.hero,
-.panel {
-  background: rgba(255, 255, 255, 0.96);
+:where(.hero, .panel) {
+  overflow: hidden;
 }
 
-.hero h1,
-.panel-title h1,
-.today-card h2,
-.card h2,
-.editor-panel h2 {
+:where(.hero h1, .panel-title h1, .today-card h2, .card h2, .editor-panel h2, .section-title, .eyebrow) {
   letter-spacing: 0;
   text-transform: none;
 }
 
-.pill,
-.badge,
-.tab-button,
-.primary,
-.secondary,
-.ghost,
-.action-card {
-  letter-spacing: 0;
+:where(.pill, .badge, .tab-button, .primary, .secondary, .ghost, .action-card, button, input, select, textarea) {
   border-width: 1px;
+  border-radius: 7px;
+  letter-spacing: 0;
+}
+
+:where(input, select, textarea) {
+  background: #fbfdff;
+  border-color: var(--border);
+}
+
+:where(input, select, textarea, button):focus-visible {
+  outline: 3px solid rgba(49, 86, 212, 0.18);
+  outline-offset: 2px;
+}
+
+:where(.primary, button.primary, .accent) {
+  background: #3156D4;
+  border-color: #2447B8;
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(49, 86, 212, 0.16);
+}
+
+:where(.secondary, .ghost, .tab-button, .pill, .badge) {
+  background: #f8fafc;
+  color: var(--text);
+}
+
+:where(.tab-button.active, .pill.active, .badge.active) {
+  background: #101827;
+  border-color: #101827;
+  color: #fff;
+}
+
+:where(.sig-link, a) {
+  text-underline-offset: 3px;
 }

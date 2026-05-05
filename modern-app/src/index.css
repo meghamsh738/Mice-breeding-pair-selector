@@ -128,3 +128,21 @@ button {
   --shadow: var(--shadow-2);
   --shadow-soft: var(--shadow-1);
 }
+/* Easylab suite visual refresh variables. */
+:root {
+  --bg: #edf2f8;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --text: #0f172a;
+  --text-2: #334155;
+  --text-3: #64748b;
+  --border: rgba(15, 23, 42, 0.12);
+  --border-2: rgba(15, 23, 42, 0.22);
+  --accent: #3156d4;
+  --accent-weak: rgba(49, 86, 212, 0.12);
+  --accent-border: rgba(49, 86, 212, 0.38);
+  --focus: rgba(49, 86, 212, 0.18);
+  --radius-sm: 8px;
+  --radius-md: 8px;
+  --shadow-soft: 0 1px 2px rgba(15, 23, 42, 0.04), 0 14px 34px rgba(15, 23, 42, 0.06);
+}
