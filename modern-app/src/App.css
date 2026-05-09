@@ -1,4 +1,4 @@
-.app-bg {
+﻿.app-bg {
   min-height: 100vh;
   background: radial-gradient(circle at 10% 10%, rgba(47, 106, 246, 0.12), transparent 45%),
     radial-gradient(circle at 90% 0%, rgba(18, 183, 106, 0.12), transparent 40%),
@@ -1518,3 +1518,675 @@ textarea:focus-visible {
 :where(.sig-link, a) {
   text-underline-offset: 3px;
 }
+/* Easylab module command-center pass. */
+:root {
+  --elab-rail: #0d1320;
+  --elab-rail-2: #141d2b;
+  --elab-ink: #101827;
+  --elab-muted: #5d6a7d;
+  --elab-line: #d7dde8;
+  --elab-soft: #f6f8fb;
+  --elab-cobalt: #3156d4;
+  --elab-cyan: #18a7a4;
+  --elab-lime: #78c956;
+  --elab-amber: #f0a429;
+}
+
+:where(.app-bg, .page) {
+  position: relative;
+  min-height: 100vh;
+  padding-left: 88px !important;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(24, 167, 164, 0.13), transparent 28%),
+    linear-gradient(180deg, #edf3f9 0%, #f7f9fc 42%, #eef3f8 100%) !important;
+  color: var(--elab-ink);
+}
+
+:where(.app-bg, .page)::before {
+  content: '';
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 72px;
+  z-index: 0;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(180deg, #0b111d, #111827 58%, #172033);
+  background-size: 18px 18px, 18px 18px, auto;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 14px 0 32px rgba(10, 18, 30, 0.16);
+}
+
+:where(.app-bg, .page)::after {
+  content: 'EASYLAB';
+  position: fixed;
+  left: 18px;
+  top: 22px;
+  z-index: 1;
+  color: rgba(255, 255, 255, 0.74);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font: 700 11px/1 var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+  letter-spacing: 0.18em;
+}
+
+:where(.app-bg > *, .page > *) {
+  position: relative;
+  z-index: 1;
+}
+
+:where(.app-bg > header.panel, .hero) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 20px;
+  margin: 18px 20px 14px !important;
+  padding: 18px 22px !important;
+  background:
+    linear-gradient(135deg, rgba(13, 19, 32, 0.98), rgba(21, 31, 47, 0.96)),
+    linear-gradient(90deg, rgba(24, 167, 164, 0.2), transparent) !important;
+  border: 1px solid rgba(255, 255, 255, 0.11) !important;
+  color: #f8fafc !important;
+  box-shadow: 0 18px 42px rgba(9, 14, 25, 0.22) !important;
+}
+
+:where(.app-bg > header.panel h1, .hero h1) {
+  color: #ffffff !important;
+  margin-bottom: 6px !important;
+  font-size: clamp(26px, 2.5vw, 38px) !important;
+}
+
+:where(.app-bg > header.panel .muted, .hero .muted, .hero .lede) {
+  color: #c7d2e1 !important;
+  max-width: 760px;
+}
+
+:where(.app-bg > header.panel .eyebrow, .hero .tag, .hero .kicker) {
+  color: #77e0db !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.13em !important;
+}
+
+:where(.app-bg > header.panel .pill, .hero .pill, .hero .ghost, .app-bg > header.panel .ghost) {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  color: #f8fafc !important;
+}
+
+.app-shell {
+  grid-template-columns: minmax(290px, 340px) minmax(0, 1fr) !important;
+  gap: 16px !important;
+  padding: 0 20px 20px !important;
+}
+
+.shell {
+  width: min(100%, 1500px) !important;
+  padding-inline: 20px !important;
+}
+
+:where(.panel, .card, .today-card, .meta-card, .about-card, .helper, .link-panel, .plate-preview-card) {
+  border: 1px solid var(--elab-line) !important;
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: 0 1px 2px rgba(13, 19, 32, 0.05), 0 18px 34px rgba(13, 19, 32, 0.07) !important;
+}
+
+.sidebar.panel,
+.card[data-testid='samples-card'],
+.card[data-testid='genes-card'] {
+  background:
+    linear-gradient(180deg, rgba(20, 29, 43, 0.98), rgba(13, 19, 32, 0.98)) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #f8fafc !important;
+  box-shadow: 0 20px 44px rgba(9, 14, 25, 0.25) !important;
+}
+
+.sidebar.panel :where(.section-title, h2, h3),
+.card[data-testid='samples-card'] :where(h2, h3, .section-title),
+.card[data-testid='genes-card'] :where(h2, h3, .section-title) {
+  color: #ffffff !important;
+}
+
+.sidebar.panel :where(.muted, .tiny),
+.card[data-testid='samples-card'] :where(.muted, .help, .muted-small),
+.card[data-testid='genes-card'] :where(.muted, .help, .muted-small) {
+  color: #b8c4d6 !important;
+}
+
+.sidebar.panel :where(.eyebrow, .kicker),
+.card[data-testid='samples-card'] :where(.eyebrow, .kicker),
+.card[data-testid='genes-card'] :where(.eyebrow, .kicker) {
+  color: #87e5e0 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+}
+
+.sidebar-section,
+.sidebar-tabs,
+.card[data-testid='samples-card'] .field,
+.card[data-testid='genes-card'] .controls,
+.card[data-testid='genes-card'] .gene-table {
+  border-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+.sidebar.panel :where(input, textarea, select, .data-textarea),
+.card[data-testid='samples-card'] :where(input, textarea, select, .textarea),
+.card[data-testid='genes-card'] :where(input, textarea, select, .gene-input) {
+  background: rgba(248, 250, 252, 0.96) !important;
+  border-color: rgba(199, 210, 225, 0.42) !important;
+  color: #0f172a !important;
+}
+
+.sidebar.panel :where(.pill, .ghost, .tab-button),
+.card[data-testid='samples-card'] :where(.pill, .ghost),
+.card[data-testid='genes-card'] :where(.pill, .ghost) {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #f8fafc !important;
+}
+
+:where(.tab-button.active, .tab.active, .tabs .active) {
+  background: linear-gradient(180deg, #3156d4, #2447b8) !important;
+  border-color: #3156d4 !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 22px rgba(49, 86, 212, 0.22) !important;
+}
+
+:where(.editor, .plate-preview-card, .card[data-testid='output-card'], .results-panel) {
+  min-height: 620px;
+}
+
+:where(.editor-header, .section-head, .today-head, .plate-head) {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--elab-line);
+}
+
+:where(.editor-body, .results-grid) {
+  gap: 14px !important;
+}
+
+:where(.today-card, .meta-card) {
+  background:
+    linear-gradient(180deg, #ffffff, #fbfdff) !important;
+}
+
+:where(.template-card.active, .meta-card, .well-square, .mini-plate, .plate-shell) {
+  background: #f7faff !important;
+  border-color: #cdd8ee !important;
+}
+
+:where(table.data, .table-wrap table) {
+  border: 1px solid var(--elab-line) !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+:where(table.data thead th, .table-wrap th) {
+  background: #eef4fb !important;
+  color: #243047 !important;
+  letter-spacing: 0.06em !important;
+}
+
+:where(table.data tbody tr:nth-child(even), .table-wrap tbody tr:nth-child(even)) {
+  background: #f8fbff !important;
+}
+
+:where(.empty) {
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  border: 1px dashed #c9d3e3;
+  border-radius: 8px;
+  background: repeating-linear-gradient(-45deg, #fbfdff, #fbfdff 12px, #f5f8fc 12px, #f5f8fc 24px);
+}
+
+:where(.primary, button.primary, .accent) {
+  background: linear-gradient(180deg, #3156d4, #2447b8) !important;
+  border-color: #2447b8 !important;
+  color: #fff !important;
+  box-shadow: 0 14px 26px rgba(49, 86, 212, 0.22) !important;
+}
+
+:where(.status-chip.success) {
+  background: rgba(120, 201, 86, 0.14) !important;
+  border-color: rgba(95, 172, 63, 0.55) !important;
+  color: #256c19 !important;
+}
+
+:where(.status-chip.warning) {
+  background: rgba(240, 164, 41, 0.13) !important;
+  border-color: rgba(240, 164, 41, 0.55) !important;
+  color: #8a570e !important;
+}
+
+:where(.well-square) {
+  box-shadow: inset 0 -1px 0 rgba(13, 19, 32, 0.08);
+}
+
+@media (max-width: 1180px) {
+  :where(.app-bg, .page) {
+    padding-left: 0 !important;
+    padding-top: 58px !important;
+  }
+
+  :where(.app-bg, .page)::before {
+    inset: 0 0 auto 0;
+    width: auto;
+    height: 48px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  :where(.app-bg, .page)::after {
+    writing-mode: horizontal-tb;
+    left: 18px;
+    top: 18px;
+  }
+
+  :where(.app-bg > header.panel, .hero) {
+    grid-template-columns: 1fr;
+    margin: 10px !important;
+  }
+
+  .app-shell {
+    grid-template-columns: 1fr !important;
+    padding: 0 10px 14px !important;
+  }
+}
+/* Header cascade fix for app-bg modules. */
+.app-bg > header.panel {
+  background:
+    linear-gradient(135deg, rgba(13, 19, 32, 0.98), rgba(21, 31, 47, 0.96)),
+    linear-gradient(90deg, rgba(24, 167, 164, 0.2), transparent) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #f8fafc !important;
+}
+
+.app-bg > header.panel :where(h1, h2, .section-title) {
+  color: #ffffff !important;
+}
+
+.app-bg > header.panel :where(.muted, p) {
+  color: #c7d2e1 !important;
+}
+
+.app-bg > header.panel :where(.eyebrow) {
+  color: #77e0db !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.13em !important;
+}
+
+.app-bg > header.panel :where(.pill, .ghost) {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #f8fafc !important;
+}
+
+.card[data-testid='samples-card'] :where(label, .toggle-label),
+.card[data-testid='genes-card'] :where(label, .toggle-label),
+.sidebar.panel :where(label, .toggle-label) {
+  color: #f8fafc;
+}
+/* Final module contrast/orientation safety pass. */
+.app-bg > header.panel {
+  background:
+    linear-gradient(135deg, rgba(13, 19, 32, 0.98), rgba(21, 31, 47, 0.96)),
+    linear-gradient(90deg, rgba(24, 167, 164, 0.2), transparent) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #f8fafc !important;
+}
+
+.app-bg > header.panel :where(h1, h2, .section-title) {
+  color: #ffffff !important;
+}
+
+.app-bg > header.panel :where(.muted, p) {
+  color: #c7d2e1 !important;
+}
+
+.app-bg > header.panel :where(.eyebrow) {
+  color: #77e0db !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.13em !important;
+}
+
+.app-bg > header.panel :where(.pill, .ghost) {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #f8fafc !important;
+}
+
+.sidebar.panel .sidebar-tabs {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+}
+
+.sidebar.panel .sidebar-tabs .tab-button {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: #dbeafe !important;
+}
+
+.sidebar.panel .sidebar-tabs .tab-button.active {
+  background: #3156d4 !important;
+  border-color: #3156d4 !important;
+  color: #ffffff !important;
+}
+
+.sidebar.panel :where(button, .pill, .ghost, .tab-button),
+.card[data-testid='genes-card'] :where(button, .pill, .ghost),
+.card[data-testid='samples-card'] :where(button, .pill, .ghost) {
+  color: #f8fafc !important;
+}
+
+.sidebar.panel :where(button svg, .pill svg, .ghost svg, .tab-button svg),
+.card[data-testid='genes-card'] :where(button svg, .pill svg, .ghost svg),
+.card[data-testid='samples-card'] :where(button svg, .pill svg, .ghost svg) {
+  color: currentColor !important;
+  stroke: currentColor !important;
+}
+
+.sidebar.panel :where(input, textarea, select, .data-textarea),
+.card[data-testid='samples-card'] :where(input, textarea, select, .textarea, .prompt-block),
+.card[data-testid='genes-card'] :where(input, textarea, select, .gene-input) {
+  color: #0f172a !important;
+}
+
+.card[data-testid='samples-card'] .field,
+.card[data-testid='samples-card'] .helper,
+.card[data-testid='samples-card'] .prompt-block,
+.card[data-testid='samples-card'] .textarea,
+.card[data-testid='genes-card'] .gene-table,
+.card[data-testid='genes-card'] .gene-row,
+.card[data-testid='genes-card'] .controls,
+.card[data-testid='genes-card'] .control {
+  color: #0f172a;
+}
+
+.card[data-testid='samples-card'] .field :where(label, span, p, .toggle-label),
+.card[data-testid='genes-card'] .gene-table :where(label, span, p),
+.card[data-testid='genes-card'] .control :where(label, span, p) {
+  color: #0f172a !important;
+}
+
+.card[data-testid='samples-card'] .helper :where(h3, p, .muted),
+.card[data-testid='samples-card'] .prompt-block {
+  color: #0f172a !important;
+}
+
+.sidebar.panel .section-title,
+.sidebar.panel h2,
+.sidebar.panel h3 {
+  color: #ffffff !important;
+}
+
+.editor,
+.card[data-testid='output-card'],
+.results-panel,
+.plate-preview-card {
+  align-self: start;
+}
+/* Keep floating tutorial trigger legible on every module background. */
+[data-testid='tutorial-start-btn'] {
+  min-width: 96px !important;
+  height: 38px !important;
+  padding: 0 14px !important;
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18) !important;
+  opacity: 1 !important;
+}
+
+[data-testid='tutorial-start-btn']:hover {
+  border-color: #3156d4 !important;
+  color: #2447b8 !important;
+}
+/* ChatGPT Images V2-inspired soft scientific workspace refresh. */
+:root {
+  --bg: #f5f8fb;
+  --panel: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f7fbff;
+  --surface-3: #edf6f4;
+  --text: #102033;
+  --text-subtle: #40536a;
+  --text-2: #40536a;
+  --text-3: #708197;
+  --muted: #708197;
+  --border: #dbe6ef;
+  --border-2: #c8d6e4;
+  --accent: #3d74d8;
+  --accent-strong: #2758b8;
+  --accent-soft: rgba(61, 116, 216, 0.12);
+  --accent-weak: rgba(20, 184, 166, 0.12);
+  --focus: rgba(61, 116, 216, 0.2);
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 10px;
+  --shadow-1: 0 1px 2px rgba(16, 32, 51, 0.06);
+  --shadow-2: 0 18px 42px rgba(72, 92, 116, 0.12);
+  --shadow: var(--shadow-2);
+  --shadow-soft: var(--shadow-1);
+}
+
+:where(.app-bg, .page) {
+  padding-left: 0 !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(245, 248, 251, 0)),
+    linear-gradient(135deg, #f7fbff 0%, #eef7f4 48%, #f8fafc 100%) !important;
+}
+
+:where(.app-bg, .page)::before,
+:where(.app-bg, .page)::after {
+  display: none !important;
+}
+
+:where(.app-bg > header.panel, .hero) {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(241, 248, 255, 0.92)),
+    linear-gradient(90deg, rgba(61, 116, 216, 0.08), rgba(20, 184, 166, 0.08)) !important;
+  border: 1px solid rgba(148, 163, 184, 0.28) !important;
+  color: var(--text) !important;
+  box-shadow: 0 20px 50px rgba(55, 80, 110, 0.12) !important;
+}
+
+:where(.app-bg > header.panel, .hero) :where(h1, h2, .section-title) {
+  color: #102033 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+:where(.app-bg > header.panel, .hero) :where(.muted, p) {
+  color: #40536a !important;
+}
+
+:where(.app-bg > header.panel, .hero) :where(.eyebrow, .tag) {
+  color: #148b83 !important;
+  letter-spacing: 0.08em !important;
+}
+
+:where(.app-bg > header.panel, .hero) :where(.pill, .ghost) {
+  background: rgba(255, 255, 255, 0.78) !important;
+  border: 1px solid rgba(148, 163, 184, 0.34) !important;
+  color: #334155 !important;
+}
+
+:where(.panel, .card, .editor, .meta, .sidebar, .hero-meta, .meta-card, .results-panel, .plate-preview-card) {
+  border: 1px solid rgba(148, 163, 184, 0.28) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 1px 2px rgba(16, 32, 51, 0.05), 0 16px 36px rgba(72, 92, 116, 0.08) !important;
+}
+
+:where(.sidebar.panel, .card[data-testid='samples-card'], .card[data-testid='genes-card']) {
+  background: rgba(255, 255, 255, 0.94) !important;
+  color: var(--text) !important;
+}
+
+:where(.sidebar.panel, .card[data-testid='samples-card'], .card[data-testid='genes-card']) :where(h2, h3, .section-title, label, .toggle-label, p, span, .muted) {
+  color: inherit !important;
+}
+
+:where(.sidebar.panel, .card[data-testid='samples-card'], .card[data-testid='genes-card']) .eyebrow,
+:where(.kicker, .eyebrow) {
+  color: #148b83 !important;
+}
+
+:where(.sidebar-tabs, .editor-tabs, .tabs) {
+  background: #eef6fb !important;
+  border: 1px solid rgba(148, 163, 184, 0.28) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72) !important;
+}
+
+:where(.tab-button, .tab) {
+  color: #40536a !important;
+  border-color: transparent !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+:where(.tab-button.active, .tab.active) {
+  background: #ffffff !important;
+  border-color: rgba(61, 116, 216, 0.25) !important;
+  color: #2758b8 !important;
+  box-shadow: 0 10px 24px rgba(61, 116, 216, 0.12) !important;
+}
+
+:where(.primary, button.primary, .accent) {
+  background: linear-gradient(180deg, #4f8be8, #2f66ca) !important;
+  border: 1px solid #2f66ca !important;
+  color: #ffffff !important;
+  box-shadow: 0 12px 24px rgba(61, 116, 216, 0.22) !important;
+}
+
+:where(button, .pill, .status-chip, .kbd, .ghost, .ghost-pill) {
+  border-radius: 999px !important;
+  letter-spacing: 0 !important;
+}
+
+:where(input, textarea, select, .data-textarea, .textarea) {
+  background: #fbfdff !important;
+  border-color: #d8e4ee !important;
+  color: #102033 !important;
+  box-shadow: inset 0 1px 2px rgba(16, 32, 51, 0.04) !important;
+}
+
+:where(table.data, .table-wrap table, .stDataFrame) {
+  background: #ffffff !important;
+  border-color: #dbe6ef !important;
+}
+
+:where(table.data thead th, .table-wrap thead th) {
+  background: #eef6fb !important;
+  color: #40536a !important;
+  letter-spacing: 0 !important;
+}
+
+:where(.empty) {
+  background: linear-gradient(135deg, #fbfdff, #f2f8fb) !important;
+  border-color: #cfe0ee !important;
+}
+
+/* Final specificity guard: keep the soft UI above older dark-console overrides. */
+.app-bg > header.panel,
+.page > .hero,
+body .app-bg > header.panel,
+body .page > .hero {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(241, 248, 255, 0.94)),
+    linear-gradient(90deg, rgba(61, 116, 216, 0.08), rgba(20, 184, 166, 0.08)) !important;
+  border: 1px solid rgba(148, 163, 184, 0.28) !important;
+  color: #102033 !important;
+  box-shadow: 0 20px 50px rgba(55, 80, 110, 0.12) !important;
+}
+
+.app-bg > header.panel :is(h1, h2, h3, .section-title, p, .muted),
+.page > .hero :is(h1, h2, h3, .section-title, p, .muted) {
+  color: #102033 !important;
+}
+
+.app-bg > header.panel :is(.eyebrow, .tag),
+.page > .hero :is(.eyebrow, .tag) {
+  color: #148b83 !important;
+}
+
+.app-bg > .app-shell > .sidebar.panel,
+.app-bg .sidebar.panel,
+.page .sidebar.panel,
+body .app-bg .sidebar.panel {
+  background: rgba(255, 255, 255, 0.95) !important;
+  color: #102033 !important;
+  border: 1px solid rgba(148, 163, 184, 0.28) !important;
+  box-shadow: 0 18px 42px rgba(72, 92, 116, 0.11) !important;
+}
+
+.app-bg .sidebar.panel :is(h2, h3, .section-title, label, .toggle-label, p, span, .muted),
+.page .sidebar.panel :is(h2, h3, .section-title, label, .toggle-label, p, span, .muted) {
+  color: #102033 !important;
+}
+
+.app-bg .sidebar.panel :is(.eyebrow, .kicker),
+.page .sidebar.panel :is(.eyebrow, .kicker) {
+  color: #148b83 !important;
+}
+
+.app-bg .sidebar.panel :is(button, .pill, .ghost, .tab-button),
+.page .sidebar.panel :is(button, .pill, .ghost, .tab-button) {
+  background: #ffffff !important;
+  color: #334155 !important;
+  border-color: rgba(148, 163, 184, 0.34) !important;
+}
+
+.app-bg .sidebar.panel :is(.tab-button.active, button.primary, .primary),
+.page .sidebar.panel :is(.tab-button.active, button.primary, .primary) {
+  background: linear-gradient(180deg, #4f8be8, #2f66ca) !important;
+  color: #ffffff !important;
+  border-color: #2f66ca !important;
+}
+
+.app-bg :is(.card, section.card, .editor, .meta, .results-panel, .plate-preview-card),
+.page :is(.card, section.card, .editor, .meta, .results-panel, .plate-preview-card),
+body .app-bg :is(.card, section.card),
+body .page :is(.card, section.card) {
+  background: rgba(255, 255, 255, 0.96) !important;
+  color: #102033 !important;
+  border: 1px solid rgba(148, 163, 184, 0.28) !important;
+  box-shadow: 0 1px 2px rgba(16, 32, 51, 0.05), 0 16px 36px rgba(72, 92, 116, 0.08) !important;
+}
+
+.app-bg :is(.card, section.card, .editor, .meta, .results-panel, .plate-preview-card) :is(h1, h2, h3, h4, p, span, label, .muted, .toggle-label),
+.page :is(.card, section.card, .editor, .meta, .results-panel, .plate-preview-card) :is(h1, h2, h3, h4, p, span, label, .muted, .toggle-label) {
+  color: #102033 !important;
+}
+
+.app-bg :is(.card, section.card, .editor, .meta) :is(.eyebrow, .kicker),
+.page :is(.card, section.card, .editor, .meta) :is(.eyebrow, .kicker) {
+  color: #148b83 !important;
+}
+
+.app-bg > header.panel .pill,
+.app-bg > header.panel .ghost,
+.page > .hero .pill,
+.page > .hero .ghost,
+body .app-bg > header.panel .pill,
+body .page > .hero .pill {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(148, 163, 184, 0.36) !important;
+  color: #334155 !important;
+  opacity: 1 !important;
+}
+
+.app-bg > header.panel .status-chip.success,
+.page > .hero .status-chip.success {
+  background: rgba(120, 201, 86, 0.16) !important;
+  border-color: rgba(95, 172, 63, 0.5) !important;
+  color: #256c19 !important;
+}
+
+.app-bg > header.panel .status-chip.warning,
+.page > .hero .status-chip.warning {
+  background: rgba(245, 158, 11, 0.15) !important;
+  border-color: rgba(245, 158, 11, 0.48) !important;
+  color: #8a570e !important;
+}
+
