@@ -1,4 +1,4 @@
-﻿.app-bg {
+.app-bg {
   min-height: 100vh;
   background: radial-gradient(circle at 10% 10%, rgba(47, 106, 246, 0.12), transparent 45%),
     radial-gradient(circle at 90% 0%, rgba(18, 183, 106, 0.12), transparent 40%),
@@ -2189,4 +2189,381 @@ body .page > .hero .pill {
   border-color: rgba(245, 158, 11, 0.48) !important;
   color: #8a570e !important;
 }
+/* Easylab lab-operations visual system: IBM Plex, warm paper, evergreen controls. */
+:root {
+  --font-sans: 'IBM Plex Sans', 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+  --font-display: 'IBM Plex Sans', 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+  --font-body: 'IBM Plex Sans', 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+  --bg: #f4efe5;
+  --panel: rgba(255, 252, 245, 0.92);
+  --surface: rgba(255, 252, 245, 0.92);
+  --surface-2: rgba(250, 245, 235, 0.9);
+  --surface-3: rgba(239, 231, 217, 0.86);
+  --text: #142620;
+  --text-subtle: #31443d;
+  --text-2: #31443d;
+  --text-3: #68736d;
+  --muted: #68736d;
+  --border: rgba(32, 48, 42, 0.12);
+  --border-2: rgba(32, 48, 42, 0.2);
+  --accent: #075c49;
+  --accent-strong: #053f32;
+  --accent-soft: rgba(7, 92, 73, 0.1);
+  --accent-weak: rgba(7, 92, 73, 0.1);
+  --focus: rgba(7, 92, 73, 0.18);
+  --success: #075c49;
+  --success-soft: rgba(7, 92, 73, 0.1);
+  --warning: #9b6b18;
+  --warning-soft: rgba(155, 107, 24, 0.12);
+  --danger: #9f2d20;
+  --danger-weak: rgba(159, 45, 32, 0.1);
+  --radius-sm: 7px;
+  --radius-md: 9px;
+  --radius-lg: 9px;
+  --tracking-display: 0;
+  --tracking-label: 0.03em;
+  --shadow-1: 0 1px 2px rgba(20, 38, 32, 0.05), 0 12px 30px rgba(20, 38, 32, 0.08);
+  --shadow-2: 0 18px 45px rgba(20, 38, 32, 0.11);
+  --shadow: var(--shadow-2);
+  --shadow-soft: var(--shadow-1);
+}
 
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(7, 92, 73, 0.25) transparent;
+}
+
+*::-webkit-scrollbar { width: 6px; height: 6px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: rgba(7, 92, 73, 0.2);
+  background-clip: padding-box;
+}
+
+body,
+:where(.app-bg, .page) {
+  font-family: var(--font-body) !important;
+  color: #142620 !important;
+  background:
+    linear-gradient(rgba(244, 239, 229, 0.96), rgba(244, 239, 229, 0.96)),
+    linear-gradient(rgba(32, 48, 42, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(32, 48, 42, 0.035) 1px, transparent 1px),
+    #f4efe5 !important;
+  background-size: auto, 28px 28px, 28px 28px, auto !important;
+}
+
+:where(.app-bg, .page) {
+  padding: 12px !important;
+}
+
+:where(.app-shell) {
+  gap: 12px !important;
+}
+
+@media (min-width: 900px) {
+  :where(.app-bg:has(.app-shell)) {
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+    height: 100dvh !important;
+    overflow: hidden !important;
+  }
+
+  :where(.app-shell) {
+    height: calc(100dvh - 24px) !important;
+    min-height: 0 !important;
+    grid-template-columns: minmax(260px, 286px) minmax(0, 1fr) !important;
+  }
+
+  :where(.sidebar.panel, .sidebar) {
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+}
+
+:where(.panel, .card, .editor, .meta, .sidebar, .hero, .module-section, .meta-card, .results-panel, .plate-preview-card, .today-card, .action-card, .workspace-bar) {
+  background: rgba(255, 252, 245, 0.92) !important;
+  border: 1px solid rgba(32, 48, 42, 0.12) !important;
+  border-radius: 9px !important;
+  box-shadow: 0 1px 2px rgba(20, 38, 32, 0.05), 0 12px 30px rgba(20, 38, 32, 0.08) !important;
+  color: #142620 !important;
+}
+
+:where(.sidebar.panel, .app-shell > .sidebar) {
+  background: linear-gradient(180deg, rgba(5, 63, 50, 0.98), rgba(0, 47, 38, 0.99)) !important;
+  border-color: rgba(0, 47, 38, 0.72) !important;
+  color: rgba(255, 252, 245, 0.9) !important;
+  box-shadow: 0 18px 45px rgba(0, 47, 38, 0.2) !important;
+}
+
+:where(.sidebar.panel, .app-shell > .sidebar) :where(h1, h2, h3, h4, .title-sm, .section-title, label, .toggle-label) {
+  color: #fffaf0 !important;
+}
+
+:where(.sidebar.panel, .app-shell > .sidebar) :where(p, span, .muted, .tiny, .eyebrow) {
+  color: rgba(255, 252, 245, 0.68) !important;
+}
+
+:where(.hero, .app-bg > header.panel) {
+  padding: 16px 18px !important;
+  gap: 12px !important;
+  background: rgba(255, 252, 245, 0.9) !important;
+}
+
+:where(h1, h2, h3, h4, .title-sm, .section-title) {
+  font-family: var(--font-display) !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: #142620 !important;
+}
+
+:where(.eyebrow, .tag, .kicker, .section-kicker, .mono, code, pre, .kbd, .pill, .status-chip, .metric-value, .metric-label, table, input, select, textarea) {
+  font-family: var(--font-mono) !important;
+}
+
+:where(.pill, .status-chip, .kbd, .badge, .chip, .filter-chip) {
+  min-height: 20px !important;
+  padding: 2px 7px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(7, 92, 73, 0.18) !important;
+  background: rgba(7, 92, 73, 0.08) !important;
+  color: #075c49 !important;
+  font-size: 10.5px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.01em !important;
+  text-transform: none !important;
+}
+
+:where(.sidebar.panel, .app-shell > .sidebar) :where(.pill, .status-chip, .kbd, .badge, .chip, .filter-chip) {
+  background: rgba(223, 234, 222, 0.12) !important;
+  border-color: rgba(223, 234, 222, 0.2) !important;
+  color: rgba(255, 252, 245, 0.84) !important;
+}
+
+:where(button, .ghost, .accent, .primary, .tab-button, .workspace-tab-button, .action-card) {
+  border-radius: 7px !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+:where(.accent, .primary, button.primary, .quick-actions .accent, .tab-button.active, .workspace-tab.active, .tab.active) {
+  background: #075c49 !important;
+  border-color: #075c49 !important;
+  color: #fffaf0 !important;
+  box-shadow: 0 8px 18px rgba(7, 92, 73, 0.16) !important;
+}
+
+:where(.ghost, button:not(.primary):not(.accent), .tab-button, .workspace-tab, .quick-actions button) {
+  background: rgba(255, 252, 245, 0.78) !important;
+  border: 1px solid rgba(32, 48, 42, 0.14) !important;
+  color: #243b34 !important;
+}
+
+:where(.sidebar.panel, .app-shell > .sidebar) :where(button:not(.primary):not(.accent), .ghost, .tab-button, .quick-actions button) {
+  background: rgba(255, 252, 245, 0.08) !important;
+  border-color: rgba(255, 252, 245, 0.14) !important;
+  color: rgba(255, 252, 245, 0.88) !important;
+}
+
+:where(.sidebar.panel, .app-shell > .sidebar) :where(.tab-button.active, .quick-actions .accent, button.primary, .primary) {
+  background: rgba(255, 252, 245, 0.92) !important;
+  border-color: rgba(255, 252, 245, 0.2) !important;
+  color: #053f32 !important;
+}
+
+:where(input, textarea, select, .data-textarea, .textarea, .search-box) {
+  background: rgba(255, 252, 245, 0.82) !important;
+  border: 1px solid rgba(32, 48, 42, 0.14) !important;
+  border-radius: 7px !important;
+  color: #142620 !important;
+  box-shadow: inset 0 1px 2px rgba(20, 38, 32, 0.04) !important;
+}
+
+:where(.sidebar.panel, .app-shell > .sidebar) :where(input, textarea, select, .search-box) {
+  background: rgba(255, 252, 245, 0.08) !important;
+  border-color: rgba(255, 252, 245, 0.14) !important;
+  color: rgba(255, 252, 245, 0.9) !important;
+}
+
+:where(table, .table-wrap table, .data-table, .plate-table) {
+  background: rgba(255, 252, 245, 0.92) !important;
+  border-color: rgba(32, 48, 42, 0.14) !important;
+}
+
+:where(table thead th, .table-wrap thead th, .data-table thead th, .plate-table thead th) {
+  background: rgba(239, 231, 217, 0.72) !important;
+  color: #31443d !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+:where(table td, table th) {
+  border-color: rgba(32, 48, 42, 0.14) !important;
+}
+
+/* Final Easylab warm lab-operations normalization. */
+body,
+#root,
+.app-bg,
+.page,
+.app,
+.min-h-screen {
+  background:
+    linear-gradient(rgba(244, 239, 229, 0.96), rgba(244, 239, 229, 0.96)),
+    linear-gradient(rgba(32, 48, 42, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(32, 48, 42, 0.035) 1px, transparent 1px),
+    #f4efe5 !important;
+  background-size: auto, 28px 28px, 28px 28px, auto !important;
+  color: #142620 !important;
+}
+
+header,
+.app-bg > header,
+.app-bg > header.panel,
+.page > header,
+.hero,
+.app-hero,
+.page-hero,
+.topbar,
+.header-card,
+.workspace-header {
+  background: rgba(255, 252, 245, 0.9) !important;
+  background-image: none !important;
+  border: 1px solid rgba(32, 48, 42, 0.12) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 8px 22px rgba(20, 38, 32, 0.06) !important;
+  color: #142620 !important;
+}
+
+.panel,
+.card,
+section,
+.form-card,
+.result-card,
+.summary-card,
+.settings-card,
+.editor-panel,
+.output-panel,
+.preview-card,
+.table-card,
+.meta-card,
+.metric-card,
+.workspace-bar,
+.tab-panel,
+.today-card,
+.action-card,
+.media-card,
+.file-card,
+.link-panel,
+.results-panel,
+.plate-preview-card,
+.plate-grid,
+.data-grid,
+.chart-card,
+.report-card {
+  background: rgba(255, 252, 245, 0.92) !important;
+  background-image: none !important;
+  border-color: rgba(32, 48, 42, 0.12) !important;
+  box-shadow: 0 8px 22px rgba(20, 38, 32, 0.06) !important;
+  color: #142620 !important;
+}
+
+input,
+textarea,
+select,
+.data-textarea,
+.textarea,
+.search-box,
+.workspace-tab,
+.tab-button,
+button:not(.primary):not(.accent):not(.danger),
+.ghost,
+.pill,
+.badge,
+.chip,
+.status-chip,
+.filter-chip,
+.kbd {
+  background: rgba(255, 252, 245, 0.78) !important;
+  background-image: none !important;
+  border-color: rgba(32, 48, 42, 0.16) !important;
+  color: #243b34 !important;
+  box-shadow: none !important;
+}
+
+button.primary,
+.primary,
+button.accent,
+.accent,
+.tab-button.active,
+.workspace-tab.active,
+.tab.active,
+button[type='submit'] {
+  background: #075c49 !important;
+  background-image: none !important;
+  border-color: #075c49 !important;
+  color: #fffaf0 !important;
+  box-shadow: 0 8px 18px rgba(7, 92, 73, 0.16) !important;
+}
+
+table,
+.table-wrap,
+.data-table,
+.plate-table {
+  background: rgba(255, 252, 245, 0.92) !important;
+  border-color: rgba(32, 48, 42, 0.14) !important;
+}
+
+thead,
+table thead th,
+.table-wrap thead th,
+.data-table thead th,
+.plate-table thead th {
+  background: rgba(239, 231, 217, 0.72) !important;
+  color: #31443d !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+strong {
+  color: #142620 !important;
+}
+
+p,
+small,
+.muted,
+.helper,
+.hint,
+.description {
+  color: #68736d !important;
+}
+
+/* Disable older decorative overlays so the paper system stays warm and quiet. */
+body::before,
+body::after,
+#root::before,
+#root::after,
+.app-bg::before,
+.app-bg::after,
+.page::before,
+.page::after,
+.min-h-screen::before,
+.min-h-screen::after {
+  display: none !important;
+  content: none !important;
+}
+
+body .app-bg > header.panel,
+body .page > .hero,
+body header.panel,
+body .hero,
+body section.hero,
+body .app-hero,
+body .page-hero {
+  background: rgba(255, 252, 245, 0.94) !important;
+  background-image: none !important;
+}
