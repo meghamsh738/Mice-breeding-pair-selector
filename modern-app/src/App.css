@@ -2567,3 +2567,196 @@ body .page-hero {
   background: rgba(255, 252, 245, 0.94) !important;
   background-image: none !important;
 }
+
+/* Final readability, wrapping, and scroll polish for packaged suite modules. */
+html,
+body,
+#root,
+:where(.app-bg, .page, .app, .min-h-screen) {
+  font-family: var(--font-body) !important;
+  color: #142620 !important;
+  scroll-behavior: smooth;
+}
+
+:where(h1, h2, h3, h4, h5, h6, strong, label, .section-title, .title-row, .title-sm) {
+  color: #142620 !important;
+  line-height: 1.18 !important;
+  letter-spacing: 0 !important;
+}
+
+:where(p, small, .muted, .muted-small, .helper, .help, .hint, .description, .lede) {
+  color: #5c6963 !important;
+}
+
+:where(input, textarea, select, .data-textarea, .textarea, .search-box) {
+  color: #142620 !important;
+  background: rgba(255, 252, 245, 0.9) !important;
+  border-color: rgba(32, 48, 42, 0.18) !important;
+}
+
+:where(input, textarea)::placeholder {
+  color: #7d8a83 !important;
+  opacity: 1 !important;
+}
+
+:where(button, .ghost, .primary, .accent, .tab-button, .tab, .workspace-tab, .pill, .tag, .chip, .status-chip, .badge) {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0 !important;
+  overflow-wrap: anywhere;
+}
+
+:where(.ghost, button:not(.primary):not(.accent):not(.danger), .tab-button, .workspace-tab) {
+  color: #203a32 !important;
+  background: rgba(255, 252, 245, 0.86) !important;
+  border-color: rgba(32, 48, 42, 0.16) !important;
+}
+
+:where(.primary, .accent, button.primary, button.accent, button[type='submit'], .tab-button.active, .tab.active, .workspace-tab.active) {
+  color: #fffaf0 !important;
+  background: #075c49 !important;
+  border-color: #075c49 !important;
+}
+
+:where(button.active, button[aria-pressed='true'], [role='tab'][aria-selected='true'], .mode-toggle button.active, .segmented button.active, .toggle-group button.active, .tabs button.active, .sidebar-tabs .tab-button.active) {
+  color: #fffaf0 !important;
+  background: #075c49 !important;
+  background-image: none !important;
+  border-color: #075c49 !important;
+}
+
+:where(.lab-head, .section-head, .hero, .hero-text, .editor-header, .cta-row, .template-row, .controls, .edit-actions, .chip-row, .pill-row, .tabs, .tab-bar, .workspace-tabs, .modal-head) {
+  min-width: 0 !important;
+  flex-wrap: wrap !important;
+  gap: clamp(8px, 1.2vw, 14px) !important;
+}
+
+:where(.panel, .card, .modal, .sidebar, .editor, .hero, .section-head, .lab-head, .table-wrap, .results-panel, .output-panel) {
+  min-width: 0 !important;
+  overflow-wrap: anywhere;
+}
+
+:where(table) {
+  table-layout: fixed;
+  width: 100%;
+}
+
+:where(th, td) {
+  overflow-wrap: anywhere;
+  color: #203a32 !important;
+}
+
+:where(pre, code, table, input, select, textarea, .data-textarea, .textarea) {
+  font-family: var(--font-mono) !important;
+}
+
+:where(.panel, .card, .sidebar, .editor, .table-wrap, .results-panel, .output-panel)::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+:where(.panel, .card, .sidebar, .editor, .table-wrap, .results-panel, .output-panel)::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+:where(.panel, .card, .sidebar, .editor, .table-wrap, .results-panel, .output-panel)::-webkit-scrollbar-thumb {
+  background: rgba(7, 92, 73, 0.22);
+  border-radius: 999px;
+}
+
+@media (max-width: 980px) {
+  :where(.app-shell, .shell, .shell.grid-2, .grid-2, .results-grid, .layout-grid, .content-grid, .template-row, .controls) {
+    grid-template-columns: 1fr !important;
+  }
+
+  :where(.hero, .panel, .card, .sidebar, .editor) {
+    max-width: 100% !important;
+  }
+}
+
+button.tab-button.active,
+.tab-button.active,
+button.active,
+button[aria-pressed='true'],
+[role='tab'][aria-selected='true'],
+.mode-toggle button.active,
+.segmented button.active,
+.toggle-group button.active,
+.tabs button.active,
+.sidebar-tabs .tab-button.active {
+  color: #fffaf0 !important;
+  background: #075c49 !important;
+  background-image: none !important;
+  border-color: #075c49 !important;
+  box-shadow: 0 8px 18px rgba(7, 92, 73, 0.16) !important;
+}
+
+.app-bg .sidebar.panel .tab-button.active,
+.app-bg .sidebar.panel button.tab-button.active,
+.page .sidebar.panel .tab-button.active,
+.page .sidebar.panel button.tab-button.active,
+body .app-bg .sidebar.panel .tab-button.active {
+  color: #fffaf0 !important;
+  background: #075c49 !important;
+  background-image: none !important;
+  border-color: #075c49 !important;
+  box-shadow: 0 8px 18px rgba(7, 92, 73, 0.16) !important;
+}
+/* Final typography pass: keep controls readable while reserving mono for lab data. */
+h1,
+h2,
+h3,
+h4,
+.panel-title,
+.section-title,
+.card-title,
+legend {
+  color: var(--ink, #142620) !important;
+  font-family: var(--font-sans, 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif) !important;
+  letter-spacing: 0 !important;
+}
+
+button,
+.button,
+.btn,
+.tab-button,
+.segmented button,
+.toggle-group button,
+.toolbar button,
+.action-row button,
+.control-row button,
+label,
+.form-label,
+.field-label,
+.sidebar label {
+  font-family: var(--font-sans, 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif) !important;
+  letter-spacing: 0 !important;
+}
+
+textarea,
+pre,
+code,
+kbd,
+table,
+.csv-preview,
+.data-preview,
+.raw-preview,
+.sample-code,
+.technical-meta,
+.metadata,
+.stat-value,
+.metric-value {
+  font-family: var(--font-mono, 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace) !important;
+}
+
+.badge,
+.pill,
+.chip,
+.status-chip,
+.status-pill,
+.metric-label,
+.eyebrow {
+  font-size: 0.78rem !important;
+  letter-spacing: 0.02em !important;
+}

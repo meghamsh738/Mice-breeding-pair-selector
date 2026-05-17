@@ -168,12 +168,12 @@ export function GuidedTutorial({
               padding: 14,
               color: '#111113',
               pointerEvents: 'auto',
-              fontFamily: 'Space Grotesk, Segoe UI, sans-serif',
+              fontFamily: 'IBM Plex Sans, Segoe UI, sans-serif',
             }}
           >
             <div
               style={{
-                fontFamily: 'Space Mono, ui-monospace, SFMono-Regular, Menlo, monospace',
+                fontFamily: 'IBM Plex Mono, ui-monospace, SFMono-Regular, Menlo, monospace',
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
                 fontSize: 12,
