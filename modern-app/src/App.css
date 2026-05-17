@@ -2760,3 +2760,23 @@ table,
   font-size: 0.78rem !important;
   letter-spacing: 0.02em !important;
 }
+
+/* Breeding sidebar alignment: keep target controls from clipping in the narrow rail. */
+.sidebar.panel .field-row {
+  align-items: end;
+  flex-wrap: wrap;
+}
+
+.sidebar.panel .field-row > .pill,
+.sidebar.panel .field-row > button {
+  flex: 0 1 auto;
+  min-width: max-content;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.sidebar.panel .field-row > .field {
+  flex: 1 1 130px;
+  min-width: 130px;
+}
