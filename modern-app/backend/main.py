@@ -15,7 +15,8 @@ import pandas as pd
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from openpyxl import load_workbook
 from itertools import product
 from datetime import datetime
 
@@ -152,6 +153,14 @@ class FindPairsRequest(BaseModel):
     desired_genotype: Dict[str, str]
     min_prob: float = 0.0
     use_example: bool = False
+    assume_missing_wildtype: bool = False
+    confirm_simple_inheritance: bool = False
+    confirm_independent_assortment: bool = False
+    exclude_shared_parent: bool = False
+    allow_unknown_relationship: bool = False
+    excluded_pairs: List[List[str]] = Field(default_factory=list)
+    reviewed_results: Optional[Dict[str, Any]] = None
+    review_metadata: Dict[str, Any] = Field(default_factory=dict)
 
 
 # Modernized API models for the React UI
@@ -260,10 +269,17 @@ def load_example_breeders() -> List[Dict[str, Any]]:
 async def upload_file(file: UploadFile = File(...)):
     try:
         contents = await file.read()
-        all_sheets = pd.read_excel(io.BytesIO(contents), sheet_name=None, engine='openpyxl')
+        if (file.filename or "").lower().endswith(".csv"):
+            all_sheets = {"Sheet1": pd.read_csv(io.BytesIO(contents))}
+        else:
+            all_sheets = pd.read_excel(io.BytesIO(contents), sheet_name=None, engine='openpyxl')
         
         processed_data = []
-        non_gene_columns = {'breeder_name', 'gender', 'dob', 'strain', 'sheet', 'age_months', 'age', 'notes'}
+        non_gene_columns = {
+            'breeder_name', 'breeder_id', 'animal_id', 'gender', 'dob', 'strain', 'sheet',
+            'age_months', 'age', 'notes', 'sire_id', 'dam_id', 'father_id',
+            'mother_id', 'parent1_id', 'parent2_id'
+        }
         
         for sheet_name, df in all_sheets.items():
             # Standardize headers
@@ -319,94 +335,235 @@ async def get_genes():
 @app.post("/find-pairs")
 async def find_pairs(request: FindPairsRequest):
     try:
-        breeders_df = pd.DataFrame(load_example_breeders() if request.use_example else request.breeders)
-        desired_genotype = request.desired_genotype
-        
-        # Identify all relevant genes from DB
-        all_genes = []
-        for genes in gene_db.transgene_db.values():
-            all_genes.extend(genes)
-            
-        direct_pairs = []
-        indirect_pairs = []
-        
-        males = breeders_df[breeders_df['gender'].str.lower().isin(['male', 'm'])]
-        females = breeders_df[breeders_df['gender'].str.lower().isin(['female', 'f'])]
-        
-        for idx_m, male in males.iterrows():
-            for idx_f, female in females.iterrows():
-                
-                # Check strain compatibility
-                male_strain = str(male.get('strain', '')).strip().lower()
-                female_strain = str(female.get('strain', '')).strip().lower()
-                same_strain = male_strain == female_strain
-                
-                probabilities = []
-                breeder_genotypes = {'Male': {}, 'Female': {}}
-                
-                # Calculate for each gene
-                for gene in desired_genotype.keys():
-                    desired_allele = desired_genotype[gene]
-                    
-                    # Get parent genotypes (default to WT if missing)
-                    wt = gene_db.wildtype_genotype.get(gene, '+/+')
-                    p1_geno = str(male.get(gene) or wt).lower().replace(' ', '')
-                    p2_geno = str(female.get(gene) or wt).lower().replace(' ', '')
-                    
-                    breeder_genotypes['Male'][gene] = p1_geno
-                    breeder_genotypes['Female'][gene] = p2_geno
-                    
-                    offspring_genos = processor.compute_offspring_genotype(p1_geno, p2_geno)
-                    prob = processor.calculate_probability(offspring_genos, desired_allele)
-                    probabilities.append(prob)
-                
-                # Overall probability
-                if probabilities:
-                    overall_prob = 1
-                    for p in probabilities:
-                        overall_prob *= (p / 100)
-                    overall_prob *= 100
-                else:
-                    overall_prob = 0
-                
-                pair_info = {
-                    'Male': male.get('breeder_name'),
-                    'Female': female.get('breeder_name'),
-                    'Male_Sheet': male.get('sheet'),
-                    'Female_Sheet': female.get('sheet'),
-                    'Probability': round(overall_prob, 2),
-                    'Same_Strain': same_strain,
-                    'Breeder_Genotypes': breeder_genotypes
+        if request.use_example:
+            breeders = load_example_breeders()
+        elif request.breeders:
+            breeders = request.breeders
+        else:
+            raise HTTPException(status_code=400, detail="Load breeder records or choose the example data before calculating pairs.")
+        desired_genotype = {str(gene).strip().lower(): str(value).strip() for gene, value in request.desired_genotype.items()}
+        if not desired_genotype:
+            raise HTTPException(status_code=400, detail="Enter at least one target gene and genotype.")
+        if not 0 <= request.min_prob <= 100:
+            raise HTTPException(status_code=400, detail="Minimum probability must be between 0 and 100 percent.")
+
+        def clean(value: Any) -> str:
+            if value is None or pd.isna(value):
+                return ""
+            text = str(value).strip()
+            return "" if text.casefold() in {"", "na", "n/a", "nan", "none", "null", "unknown", "unk", "-"} else text
+
+        def first_text(row: Dict[str, Any], *columns: str) -> str:
+            for column in columns:
+                value = clean(row.get(column))
+                if value:
+                    return value
+            return ""
+
+        def breeder_key(breeder: Dict[str, Any], index: int) -> str:
+            explicit_id = first_text(breeder, "breeder_id", "animal_id")
+            if explicit_id:
+                return explicit_id
+            name = first_text(breeder, "breeder_name", "name")
+            sheet = clean(breeder.get("sheet"))
+            if not name:
+                raise HTTPException(status_code=400, detail=f"Breeder row {index + 1} needs a breeder name or ID.")
+            return f"{sheet}::{name}" if sheet else name
+
+        identified = [(breeder_key(breeder, index), breeder) for index, breeder in enumerate(breeders)]
+        identifiers = [key for key, _ in identified]
+        if len(identifiers) != len(set(identifiers)):
+            raise HTTPException(status_code=400, detail="Breeder IDs must be unique. Add a breeder_id column or distinguish names by sheet.")
+
+        def normalized_pair_key(first: str, second: str) -> Tuple[str, str]:
+            return tuple(sorted((first.strip(), second.strip())))
+
+        excluded_keys = {
+            normalized_pair_key(str(pair[0]), str(pair[1]))
+            for pair in request.excluded_pairs if len(pair) == 2
+        }
+
+        males = [(key, row) for key, row in identified if clean(row.get("gender")).lower() in {"male", "m"}]
+        females = [(key, row) for key, row in identified if clean(row.get("gender")).lower() in {"female", "f"}]
+        direct_pairs: List[Dict[str, Any]] = []
+        indirect_pairs: List[Dict[str, Any]] = []
+        needs_review: List[Dict[str, Any]] = []
+        excluded: List[Dict[str, Any]] = []
+        below_threshold: List[Dict[str, Any]] = []
+
+        wildtype_by_gene = {gene.lower(): value for gene, value in gene_db.wildtype_genotype.items()}
+        def parent_ids(row: Dict[str, Any]) -> set[str]:
+            aliases = ("sire_id", "dam_id", "father_id", "mother_id", "parent1_id", "parent2_id")
+            return {clean(row.get(name)).lower() for name in aliases if clean(row.get(name))}
+
+        def parents_complete(row: Dict[str, Any]) -> bool:
+            has_sire = bool(first_text(row, "sire_id", "father_id", "parent1_id"))
+            has_dam = bool(first_text(row, "dam_id", "mother_id", "parent2_id"))
+            return has_sire and has_dam
+
+        def parse_genotype(value: str) -> Optional[str]:
+            cleaned = value.lower().replace(" ", "")
+            alleles = cleaned.split("/")
+            if len(alleles) != 2 or not all(alleles):
+                return None
+            return processor.normalize_genotype(cleaned)
+
+        for gene, desired_value in desired_genotype.items():
+            if parse_genotype(desired_value) is None:
+                raise HTTPException(status_code=400, detail=f"Target genotype for {gene} must contain two alleles separated by '/'.")
+
+        for male_id, male in males:
+            for female_id, female in females:
+                pair_id = "::".join(sorted((male_id, female_id)))
+                male_strain = clean(male.get("strain")).lower()
+                female_strain = clean(female.get("strain")).lower()
+                pair_info: Dict[str, Any] = {
+                    "Pair_ID": pair_id,
+                    "Male_ID": male_id,
+                    "Female_ID": female_id,
+                    "Male": first_text(male, "breeder_name", "name") or male_id,
+                    "Female": first_text(female, "breeder_name", "name") or female_id,
+                    "Male_Sheet": clean(male.get("sheet")),
+                    "Female_Sheet": clean(female.get("sheet")),
+                    "Same_Strain": bool(male_strain and female_strain and male_strain == female_strain),
+                    "Breeder_Genotypes": {"Male": {}, "Female": {}},
+                    "Locus_Probabilities": {},
+                    "Reasons": [],
+                    "Status": "Eligible",
                 }
-                
-                if overall_prob > request.min_prob:
-                    direct_pairs.append(pair_info)
-                elif overall_prob == 0:
-                    # Calculate similarity for indirect pairs
+
+                if normalized_pair_key(male_id, female_id) in excluded_keys:
+                    pair_info.update(Status="Excluded", Reasons=["Pair excluded by the researcher."])
+                    excluded.append(pair_info)
+                    continue
+
+                shared_parents = sorted(parent_ids(male) & parent_ids(female))
+                relationship_unknown = not (parents_complete(male) and parents_complete(female))
+                pair_info["Relationship"] = "Shared parent" if shared_parents else "Unresolved" if relationship_unknown else "No shared parent identified"
+                pair_info["Shared_Parent_IDs"] = shared_parents
+                if request.exclude_shared_parent and shared_parents:
+                    pair_info.update(Status="Excluded", Reasons=["The breeders have a known shared parent."])
+                    excluded.append(pair_info)
+                    continue
+                if request.exclude_shared_parent and relationship_unknown and not request.allow_unknown_relationship:
+                    pair_info.update(Status="Needs review", Reasons=["One or both breeders have incomplete parent IDs."])
+                    needs_review.append(pair_info)
+                    continue
+                if request.exclude_shared_parent and relationship_unknown:
+                    pair_info["Reasons"].append("Parent IDs are incomplete. This pair was retained after your confirmation.")
+
+                locus_probabilities: List[float] = []
+                missing_genotypes: List[str] = []
+                invalid_genotypes: List[str] = []
+                assumptions: List[str] = []
+                for gene, desired_value in desired_genotype.items():
+                    target = parse_genotype(desired_value)
+
+                    parent_genotypes: Dict[str, Optional[str]] = {}
+                    for sex, row, breeder_id in (("Male", male, male_id), ("Female", female, female_id)):
+                        raw = clean(row.get(gene))
+                        if not raw and request.assume_missing_wildtype:
+                            raw = clean(wildtype_by_gene.get(gene))
+                            if raw:
+                                animal_name = first_text(row, "breeder_name", "name") or breeder_id
+                                assumptions.append(f"{sex} {animal_name}: blank {gene} treated as {raw}.")
+                        parsed = parse_genotype(raw) if raw else None
+                        parent_genotypes[sex] = parsed
+                        pair_info["Breeder_Genotypes"][sex][gene] = parsed or raw
+                        if not raw:
+                            missing_genotypes.append(f"{sex} {gene}")
+                        elif parsed is None:
+                            invalid_genotypes.append(f"{sex} {gene}")
+
+                    if request.confirm_simple_inheritance and parent_genotypes["Male"] is not None and parent_genotypes["Female"] is not None:
+                        offspring = processor.compute_offspring_genotype(parent_genotypes["Male"], parent_genotypes["Female"])
+                        probability = processor.calculate_probability(offspring, target)
+                        pair_info["Locus_Probabilities"][gene] = round(probability, 2)
+                        locus_probabilities.append(probability)
+
+                pair_info["Assumptions"] = assumptions
+                if missing_genotypes or invalid_genotypes:
+                    reasons = []
+                    if missing_genotypes:
+                        reasons.append("Missing genotypes: " + ", ".join(missing_genotypes) + ".")
+                    if invalid_genotypes:
+                        reasons.append("Check genotype format: " + ", ".join(invalid_genotypes) + ".")
+                    pair_info.update(Status="Needs review", Reasons=reasons)
+                    needs_review.append(pair_info)
+                    continue
+
+                if not request.confirm_simple_inheritance:
+                    pair_info.update(Status="Needs review", Reasons=["Confirm the simple two-allele inheritance model before viewing genotype probabilities."])
+                    needs_review.append(pair_info)
+                    continue
+
+                if len(locus_probabilities) > 1 and request.confirm_independent_assortment:
+                    combined_probability = 100.0
+                    for probability in locus_probabilities:
+                        combined_probability *= probability / 100.0
+                    pair_info["Probability"] = round(combined_probability, 2)
+                    pair_info["Rank_Basis"] = "Combined probability under the confirmed independent-assortment assumption"
+                    rank_score = combined_probability
+                elif len(locus_probabilities) > 1:
+                    pair_info["Probability"] = None
+                    pair_info["Rank_Basis"] = "Lowest per-locus probability; combined probability not calculated"
+                    rank_score = min(locus_probabilities)
+                else:
+                    pair_info["Probability"] = round(locus_probabilities[0], 2) if locus_probabilities else None
+                    pair_info["Rank_Basis"] = "Single-locus probability"
+                    rank_score = locus_probabilities[0] if locus_probabilities else 0
+
+                pair_info["Ranking_Score"] = round(rank_score, 2)
+                if locus_probabilities and all(probability > 0 for probability in locus_probabilities):
+                    if rank_score >= request.min_prob:
+                        direct_pairs.append(pair_info)
+                    else:
+                        pair_info.update(Status="Below threshold", Reasons=[f"Ranking score is below the {request.min_prob:g}% minimum."])
+                        below_threshold.append(pair_info)
+                else:
                     similarity_scores = []
-                    for gene in desired_genotype.keys():
-                        desired_allele = desired_genotype[gene]
-                        wt = gene_db.wildtype_genotype.get(gene, '+/+')
-                        p1_geno = str(male.get(gene) or wt).lower().replace(' ', '')
-                        p2_geno = str(female.get(gene) or wt).lower().replace(' ', '')
-                        
-                        offspring_genos = processor.compute_offspring_genotype(p1_geno, p2_geno)
-                        sim = processor.calculate_similarity_score(offspring_genos, desired_allele)
-                        similarity_scores.append(sim)
-                    
-                    avg_sim = sum(similarity_scores) / len(similarity_scores) if similarity_scores else 0
-                    pair_info['Similarity'] = round(avg_sim, 2)
+                    for gene, probability in pair_info["Locus_Probabilities"].items():
+                        if probability == 0:
+                            desired = desired_genotype[gene]
+                            male_genotype = pair_info["Breeder_Genotypes"]["Male"][gene]
+                            female_genotype = pair_info["Breeder_Genotypes"]["Female"][gene]
+                            offspring = processor.compute_offspring_genotype(male_genotype, female_genotype)
+                            similarity_scores.append(processor.calculate_similarity_score(offspring, desired))
+                    pair_info["Similarity"] = round(sum(similarity_scores) / len(similarity_scores), 2) if similarity_scores else 0
                     indirect_pairs.append(pair_info)
 
-        # Sort results
-        direct_pairs.sort(key=lambda x: x['Probability'], reverse=True)
-        indirect_pairs.sort(key=lambda x: x.get('Similarity', 0), reverse=True)
-        
+        sort_score = lambda row: (row.get("Ranking_Score") or 0, row["Male_ID"], row["Female_ID"])
+        direct_pairs.sort(key=sort_score, reverse=True)
+        indirect_pairs.sort(key=lambda row: (row.get("Similarity") or 0, *sort_score(row)), reverse=True)
+
         return {
+            "algorithm_version": "breeding-review-v2",
             "direct_pairs": direct_pairs,
-            "indirect_pairs": indirect_pairs
+            "indirect_pairs": indirect_pairs,
+            "needs_review_pairs": needs_review,
+            "excluded_pairs": excluded,
+            "below_threshold_pairs": below_threshold,
+            "probability_method": (
+                "Inheritance model not confirmed"
+                if not request.confirm_simple_inheritance
+                else
+                "Independent assortment confirmed"
+                if len(desired_genotype) > 1 and request.confirm_independent_assortment
+                else "Per-locus probabilities; combined probability not calculated"
+                if len(desired_genotype) > 1
+                else "Single-locus probability"
+            ),
+            "assumptions": {
+                "missing_wildtype_confirmed": request.assume_missing_wildtype,
+                "simple_inheritance_confirmed": request.confirm_simple_inheritance,
+                "independent_assortment_confirmed": len(desired_genotype) > 1 and request.confirm_simple_inheritance and request.confirm_independent_assortment,
+                "shared_parent_exclusion_enabled": request.exclude_shared_parent,
+                "unknown_parent_records_allowed": request.allow_unknown_relationship,
+            },
         }
         
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -571,23 +728,79 @@ async def delete_genes(genes: List[str] = Form(...)):
 async def export_breeders(request: FindPairsRequest):
     """Export direct/indirect breeding pairs to Excel."""
     try:
-        breeders = load_example_breeders() if request.use_example or not request.breeders else request.breeders
-        results = await find_pairs(FindPairsRequest(
-            breeders=breeders,
-            desired_genotype=request.desired_genotype,
-            min_prob=request.min_prob,
-            use_example=request.use_example
-        ))  # type: ignore
+        results = request.reviewed_results
+        if results is None:
+            breeders = request.breeders
+            results = await find_pairs(FindPairsRequest(
+                breeders=breeders,
+                desired_genotype=request.desired_genotype,
+                min_prob=request.min_prob,
+                use_example=request.use_example,
+                assume_missing_wildtype=request.assume_missing_wildtype,
+                confirm_simple_inheritance=request.confirm_simple_inheritance,
+                confirm_independent_assortment=request.confirm_independent_assortment,
+                exclude_shared_parent=request.exclude_shared_parent,
+                allow_unknown_relationship=request.allow_unknown_relationship,
+                excluded_pairs=request.excluded_pairs,
+            ))  # type: ignore
+        direct_pairs = results.get("direct_pairs", [])
+        selected_pair_id = str(request.review_metadata.get("selected_pair_id", "")).strip()
+        locked_pair_id = str(request.review_metadata.get("locked_pair_id", "")).strip()
+        selection_reason = str(request.review_metadata.get("selection_reason", "")).strip()
+        selected_pair_index = next(
+            (index for index, pair in enumerate(direct_pairs) if pair.get("Pair_ID") == selected_pair_id),
+            None,
+        ) if selected_pair_id else None
+        if selected_pair_id and selected_pair_index is None:
+            raise HTTPException(status_code=400, detail="Only pairs that can produce the target at each locus can be selected.")
+        if locked_pair_id and locked_pair_id != selected_pair_id:
+            raise HTTPException(status_code=400, detail="The locked pair must match the selected eligible pair.")
+        if selected_pair_index is not None and selected_pair_index > 0 and not selection_reason:
+            raise HTTPException(status_code=400, detail="Add a reason when choosing a different eligible pair.")
         output = io.BytesIO()
         with pd.ExcelWriter(output, engine='openpyxl') as writer:
             pd.DataFrame(results['direct_pairs']).to_excel(writer, sheet_name="Direct", index=False)
             pd.DataFrame(results['indirect_pairs']).to_excel(writer, sheet_name="Indirect", index=False)
+            pd.DataFrame(results.get('needs_review_pairs', [])).to_excel(writer, sheet_name="Needs review", index=False)
+            pd.DataFrame(results.get('excluded_pairs', [])).to_excel(writer, sheet_name="Excluded", index=False)
+            pd.DataFrame(results.get('below_threshold_pairs', [])).to_excel(writer, sheet_name="Below threshold", index=False)
+            input_rows = request.breeders or (load_example_breeders() if request.use_example else [])
+            pd.DataFrame(input_rows).to_excel(writer, sheet_name="Breeder inputs", index=False)
+            selected_pairs = [
+                pair for pair in direct_pairs
+                if pair.get("Pair_ID") == selected_pair_id
+            ]
+            pd.DataFrame(selected_pairs).to_excel(writer, sheet_name="Selected pair", index=False)
+            review_rows = [
+                {"Setting": "Target genotype", "Value": json.dumps(request.review_metadata.get("target_genotype", request.desired_genotype), sort_keys=True)},
+                {"Setting": "Probability method", "Value": results.get("probability_method", "")},
+                {"Setting": "Algorithm version", "Value": results.get("algorithm_version", "")},
+                {"Setting": "Selected pair ID", "Value": request.review_metadata.get("selected_pair_id", "")},
+                {"Setting": "Selection reason", "Value": request.review_metadata.get("selection_reason", "")},
+                {"Setting": "Locked pair ID", "Value": request.review_metadata.get("locked_pair_id", "")},
+                {"Setting": "Confirmed assumptions", "Value": json.dumps(results.get("assumptions", {}), sort_keys=True)},
+                {"Setting": "Specific pair exclusions", "Value": json.dumps(request.review_metadata.get("excluded_pairs", request.excluded_pairs))},
+                {"Setting": "Selected pair was locked", "Value": bool(request.review_metadata.get("locked_pair_id"))},
+                {"Setting": "Exported at", "Value": request.review_metadata.get("saved_at", "")},
+            ]
+            pd.DataFrame(review_rows).to_excel(writer, sheet_name="Review", index=False)
         output.seek(0)
+        workbook = load_workbook(output)
+        for worksheet in workbook.worksheets:
+            for row in worksheet.iter_rows():
+                for cell in row:
+                    if cell.data_type == "f":
+                        cell.data_type = "s"
+        safe_output = io.BytesIO()
+        workbook.save(safe_output)
+        safe_output.seek(0)
         return StreamingResponse(
-            output,
+            safe_output,
             media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             headers={"Content-Disposition": "attachment; filename=breeder_pairs.xlsx"}
         )
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

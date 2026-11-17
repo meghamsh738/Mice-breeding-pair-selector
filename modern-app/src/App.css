@@ -1233,6 +1233,20 @@
   gap: 6px;
 }
 
+.checkbox-field {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.checkbox-field input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  margin: 3px 0 0;
+  padding: 0;
+}
+
 .field-row {
   display: flex;
   gap: 8px;
